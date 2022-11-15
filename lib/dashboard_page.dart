@@ -131,15 +131,17 @@ class CalendarTab extends StatefulWidget {
   State<CalendarTab> createState() => _CalendarTabState();
 }
 
-class _CalendarTabState extends State<CalendarTab> {
+class _CalendarTabState extends State<CalendarTab>
+    with AutomaticKeepAliveClientMixin<CalendarTab> {
   DateTime? _selectedDay;
   DateTime _focusedDay = DateTime.now();
 
-  bool _value = false;
-  bool _value2 = false;
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -195,28 +197,6 @@ class _CalendarTabState extends State<CalendarTab> {
               _selectedDay == null
                   ? "No day Selected"
                   : "${_selectedDay!.day} ${DateFormat.MMMM().format(_selectedDay!)} ${_selectedDay!.year}",
-            ),
-          ),
-          ListTile(
-            title: const Text("End date"),
-            trailing: Switch(
-              value: _value,
-              onChanged: (value) {
-                setState(() {
-                  _value = value;
-                });
-              },
-            ),
-          ),
-          ListTile(
-            title: const Text("Include time"),
-            trailing: Switch(
-              value: _value2,
-              onChanged: (value) {
-                setState(() {
-                  _value2 = value;
-                });
-              },
             ),
           ),
         ],
