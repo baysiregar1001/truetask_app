@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:truetask_app/dashboard_page.dart';
+import 'package:truetask_app/screen/dashboard_page.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({Key? key}) : super(key: key);

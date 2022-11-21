@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:truetask_app/screen/dashboard_page.dart';
+import 'package:truetask_app/screen/forget_password_page.dart';
+import 'package:truetask_app/screen/register_page.dart';
 // import 'package:flutter/services.dart';
-import 'package:truetask_app/splashscreen/splash.dart';
+import 'package:truetask_app/screen/splashscreen/splash.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Splash(),
+      home: const DashboardPage(),
     );
   }
 }

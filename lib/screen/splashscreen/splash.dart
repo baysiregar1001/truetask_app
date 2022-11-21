@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import 'package:truetask_app/onBoardingPage/onBoardingPage1.dart';
+import 'package:truetask_app/screen/onBoardingPage/onBoardingPage1.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);

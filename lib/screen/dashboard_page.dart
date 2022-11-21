@@ -12,6 +12,7 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -29,6 +30,7 @@ class _DashboardPageState extends State<DashboardPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black),
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: const Text(
@@ -42,10 +44,20 @@ class _DashboardPageState extends State<DashboardPage>
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.person_outline),
-            splashRadius: 20,
-            color: Colors.black,
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: const [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('test'),
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -74,7 +86,6 @@ class _DashboardPageState extends State<DashboardPage>
                   suffixIcon: IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.tune),
-                    splashRadius: 20,
                   ),
                 ),
                 onTap: null,

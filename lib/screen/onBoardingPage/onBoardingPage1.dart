@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:truetask_app/welcome.dart';
+import 'package:truetask_app/screen/welcome.dart';
 // import 'package:introduction_screen/introduction_screen.dart';
 
 class OnBoardingPage1 extends StatelessWidget {
