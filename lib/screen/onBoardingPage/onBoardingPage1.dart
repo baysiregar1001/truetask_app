@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:truetask_app/welcome.dart';
+import 'package:truetask_app/screen/welcome.dart';
 // import 'package:introduction_screen/introduction_screen.dart';
 
 class OnBoardingPage1 extends StatelessWidget {
+  const OnBoardingPage1({super.key});
+
   @override
   Widget build(BuildContext context) {
-    const pageDecoration = const PageDecoration(
+    const pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.bold,
@@ -23,27 +25,30 @@ class OnBoardingPage1 extends StatelessWidget {
         PageViewModel(
           title: "Be A Creative Person",
           body: "Millions of peoples can’t  Wait to see what you have to share",
-          image: Image.asset("assets/keyboard.jpg", 
-          width: 375,
-          height: 428,
+          image: Image.asset(
+            "assets/keyboard.jpg",
+            width: 375,
+            height: 428,
           ),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Be A Creative Person",
           body: "Millions of peoples can’t  Wait to see what you have to share",
-          image: Image.asset("assets/keyboard.jpg", 
-          width: 375,
-          height: 428,
+          image: Image.asset(
+            "assets/keyboard.jpg",
+            width: 375,
+            height: 428,
           ),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Be A Creative Person",
           body: "Millions of peoples can’t  Wait to see what you have to share",
-          image: Image.asset("assets/keyboard.jpg", 
-          width: 375,
-          height: 428,
+          image: Image.asset(
+            "assets/keyboard.jpg",
+            width: 375,
+            height: 428,
           ),
           decoration: pageDecoration,
           // footer: ElevatedButton(
@@ -51,14 +56,17 @@ class OnBoardingPage1 extends StatelessWidget {
           //     Navigator.pushReplacement(
           //     context, MaterialPageRoute(builder: (context) => (Welcome()),),
           //     );
-          //   }, 
+          //   },
           //   child: Text("Get Started"),
           // ),
         ),
       ],
       onDone: () {
         Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => (Welcome()),),
+          context,
+          MaterialPageRoute(
+            builder: (context) => (const Welcome()),
+          ),
         );
       },
       showSkipButton: true,
@@ -67,30 +75,31 @@ class OnBoardingPage1 extends StatelessWidget {
       dotsFlex: 1,
       nextFlex: 1,
       skipOrBackFlex: 1,
-
-      back: Icon(Icons.arrow_back),
-      skip: Text("Skip",
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
+      back: const Icon(Icons.arrow_back),
+      skip: const Text(
+        "Skip",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
       ),
+      next: const Icon(Icons.arrow_forward_ios),
+      done: const Text(
+        "Done",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
       ),
-      next: Icon(Icons.arrow_forward_ios),
-      done: Text("Done",
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-      ),
-      ),
-      dotsDecorator: DotsDecorator(
+      dotsDecorator: const DotsDecorator(
         size: Size(10, 10),
         color: Colors.blue,
         activeSize: Size(22, 10),
         activeShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25),),
+          borderRadius: BorderRadius.all(
+            Radius.circular(25),
+          ),
         ),
       ),
     );
-
-
 
     // return Scaffold(
     //   body: Container(

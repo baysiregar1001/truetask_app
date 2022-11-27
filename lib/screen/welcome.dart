@@ -1,24 +1,35 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:truetask_app/screen/dashboard_page.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
+    return Scaffold(
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("Hello !\nWelcome to",
+          const Text(
+            "Hello !\nWelcome to",
             style: TextStyle(
               fontSize: 48,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
-            ),
+          ),
           Image.asset("assets/logo.png"),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const DashboardPage(),
+                ),
+                (route) => false,
+              );
+            },
+            child: const Text("Login"),
+          ),
         ],
       ),
     );
