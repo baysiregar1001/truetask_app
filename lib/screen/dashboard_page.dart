@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:truetask_app/screen/login_page.dart';
+import 'package:truetask_app/viewmodels/authUser.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -14,9 +19,15 @@ class _DashboardPageState extends State<DashboardPage>
   TabController? _tabController;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  String? userToken;
+  bool _isLoading = false;
+
+  final _user = AuthUser();
+
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+    _checkToken();
     super.initState();
   }
 
@@ -24,6 +35,14 @@ class _DashboardPageState extends State<DashboardPage>
   void dispose() {
     super.dispose();
     _tabController!.dispose();
+  }
+
+  _checkToken() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var token = localStorage.getString('token');
+    setState(() {
+      userToken = token;
+    });
   }
 
   @override
@@ -49,12 +68,26 @@ class _DashboardPageState extends State<DashboardPage>
       ),
       drawer: Drawer(
         child: ListView(
-          children: const [
+          children: [
             DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
               child: Text('test'),
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text("Logout"),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => const CircularProgressIndicator(),
+                );
+                _user.logout();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const LoginPage(),
+                ));
+              },
             ),
           ],
         ),
@@ -122,10 +155,7 @@ class _DashboardPageState extends State<DashboardPage>
               child: TabBarView(
                 controller: _tabController,
                 physics: const NeverScrollableScrollPhysics(),
-                children: const [
-                  Center(child: Text("overview")),
-                  CalendarTab()
-                ],
+                children: [Center(child: Text("$userToken")), CalendarTab()],
               ),
             ),
           ],
