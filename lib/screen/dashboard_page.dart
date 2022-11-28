@@ -17,11 +17,8 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   String? userToken;
-  bool _isLoading = false;
-
   final _user = AuthUser();
 
   @override
@@ -40,9 +37,7 @@ class _DashboardPageState extends State<DashboardPage>
   _checkToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
-    setState(() {
-      userToken = token;
-    });
+    print(token);
   }
 
   @override
@@ -69,20 +64,16 @@ class _DashboardPageState extends State<DashboardPage>
       drawer: Drawer(
         child: ListView(
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
               child: Text('test'),
             ),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("Logout"),
+              leading: const Icon(Icons.logout),
+              title: const Text("Logout"),
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => const CircularProgressIndicator(),
-                );
                 _user.logout();
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => const LoginPage(),
@@ -155,7 +146,7 @@ class _DashboardPageState extends State<DashboardPage>
               child: TabBarView(
                 controller: _tabController,
                 physics: const NeverScrollableScrollPhysics(),
-                children: [Center(child: Text("$userToken")), CalendarTab()],
+                children: [const OverviewTab(), const CalendarTab()],
               ),
             ),
           ],
@@ -241,6 +232,19 @@ class _CalendarTabState extends State<CalendarTab>
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class OverviewTab extends StatelessWidget {
+  const OverviewTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: const [Text("Overview")],
       ),
     );
   }
