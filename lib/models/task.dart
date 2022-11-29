@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:truetask_app/models/user.dart';
+
 List<Task> taskFromJson(String str) =>
     List<Task>.from(json.decode(str).map((x) => Task.fromJson(x)));
 
@@ -10,7 +12,7 @@ class Task {
   String? workspaceId, title, description, status, progress;
   dynamic label, milestone;
   DateTime? createdAt, updatedAt;
-  List<dynamic>? userTask;
+  List<UserTask>? userTask;
 
   Task({
     this.id,
@@ -28,18 +30,19 @@ class Task {
   });
 
   factory Task.fromJson(Map<String, dynamic> json) => Task(
-        id: json["id"] as int,
-        userId: json["user_id"] as int,
-        workspaceId: json["workspace_id"] as String,
-        title: json["title"] as String,
-        description: json["description"] as String,
-        status: json["status"] as String,
-        progress: json["progress"] as String,
+        id: json["id"],
+        userId: json["user_id"],
+        workspaceId: json["workspace_id"],
+        title: json["title"],
+        description: json["description"],
+        status: json["status"],
+        progress: json["progress"],
         label: json["label"],
         milestone: json["milestone"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        userTask: List<dynamic>.from(json["user_task"].map((x) => x)),
+        userTask: List<UserTask>.from(
+            json["user_task"].map((x) => UserTask.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

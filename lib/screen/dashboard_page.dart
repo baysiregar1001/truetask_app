@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:truetask_app/models/task.dart';
+import 'package:truetask_app/models/workspace.dart';
 import 'package:truetask_app/screen/login_page.dart';
+import 'package:truetask_app/services/fetchWorkspace.dart';
 import 'package:truetask_app/viewmodels/authUser.dart';
+import 'package:truetask_app/viewmodels/getTask.dart';
+import 'package:truetask_app/viewmodels/getWorkspace.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -237,14 +242,51 @@ class _CalendarTabState extends State<CalendarTab>
   }
 }
 
-class OverviewTab extends StatelessWidget {
+class OverviewTab extends StatefulWidget {
   const OverviewTab({super.key});
 
   @override
+  State<OverviewTab> createState() => _OverviewTabState();
+}
+
+class _OverviewTabState extends State<OverviewTab> {
+  ListWorkspaceViewModel listWorkspace = ListWorkspaceViewModel();
+
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: const [Text("Overview")],
+    return Center(
+      child: FutureBuilder<List<WorkspaceViewModel>?>(
+        future: listWorkspace.fetchWorkspaces(),
+        builder: (context, snapshot) {
+          print(snapshot.connectionState);
+          final data = snapshot.data;
+          if (snapshot.connectionState == ConnectionState.done) {
+            print(snapshot.hasData);
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: data!.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Colors.amber,
+                    elevation: 2,
+                    child: ListTile(
+                      title: Text(
+                          listWorkspace.workspaces![index].workspace!.name!),
+                      subtitle: Text(listWorkspace
+                          .workspaces![index].workspace!.description!),
+                      trailing: Text(listWorkspace
+                          .workspaces![index].workspace!.ownerId
+                          .toString()),
+                    ),
+                  );
+                },
+              );
+            }
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }
