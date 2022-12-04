@@ -38,6 +38,16 @@ class ApiService {
     return response;
   }
 
+  deleteData(apiUrl) async {
+    var fullUrl = baseUrl + apiUrl;
+    await _getToken();
+    final response = await http.delete(
+      Uri.parse(fullUrl),
+      headers: _setHeaders(),
+    );
+    return response;
+  }
+
   _setHeaders() => {
         'Content-type': 'application/json',
         'Accept': 'application/json',

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:truetask_app/screen/splashscreen/splash.dart';
+// import 'package:truetask_app/utils/check_auth.dart';
+// import 'package:truetask_app/utils/routes.dart' as route;
 // import 'package:flutter/services.dart';
 
 void main() {
@@ -21,6 +23,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const Splash(),
+      // onGenerateRoute: route.controller,
+      // initialRoute: route.splashPage,
     );
   }
 }

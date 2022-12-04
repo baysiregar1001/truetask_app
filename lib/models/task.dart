@@ -41,8 +41,10 @@ class Task {
         milestone: json["milestone"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        userTask: List<UserTask>.from(
-            json["user_task"].map((x) => UserTask.fromJson(x))),
+        userTask: json["user_task"] != null
+            ? List<UserTask>.from(
+                json["user_task"].map((x) => UserTask.fromJson(x)))
+            : null,
       );
 
   Map<String, dynamic> toJson() => {

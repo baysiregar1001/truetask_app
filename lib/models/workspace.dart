@@ -1,10 +1,32 @@
 import 'dart:convert';
 
+import 'package:truetask_app/models/task.dart';
 import 'package:truetask_app/models/user.dart';
 
-Workspace workspaceFromJson(String str) => Workspace.fromJson(json.decode(str));
+class WorkspaceMain {
+  WorkspaceMain({
+    this.workspace,
+    this.tasks,
+  });
 
-String workspaceToJson(Workspace data) => json.encode(data.toJson());
+  Workspace? workspace;
+  List<Task>? tasks;
+
+  WorkspaceMain workspaceMainFromJson(String str) =>
+      WorkspaceMain.fromJson(json.decode(str));
+
+  String workspaceMainToJson(WorkspaceMain data) => json.encode(data.toJson());
+
+  factory WorkspaceMain.fromJson(Map<String, dynamic> json) => WorkspaceMain(
+        workspace: Workspace.fromJson(json["workspace"]),
+        tasks: List<Task>.from(json["tasks"].map((x) => Task.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "workspace": workspace!.toJson(),
+        "tasks": List<dynamic>.from(tasks!.map((x) => x.toJson())),
+      };
+}
 
 class Workspace {
   String? id, name, description, visibility;
@@ -19,6 +41,11 @@ class Workspace {
     this.visibility,
     this.userWorkspace,
   });
+
+  Workspace workspaceFromJson(String str) =>
+      Workspace.fromJson(json.decode(str));
+
+  String workspaceToJson(Workspace data) => json.encode(data.toJson());
 
   factory Workspace.fromJson(Map<String, dynamic> json) => Workspace(
         id: json["id"],

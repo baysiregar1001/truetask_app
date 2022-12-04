@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:truetask_app/screen/dashboard_page.dart';
+import 'package:truetask_app/screen/profilepage.dart';
 import 'package:truetask_app/screen/register_page.dart';
 import 'package:truetask_app/services/api_service.dart';
+import 'package:truetask_app/services/fetchUserProfile.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:truetask_app/utils/validator.dart';
-import 'package:truetask_app/viewmodels/authUser.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

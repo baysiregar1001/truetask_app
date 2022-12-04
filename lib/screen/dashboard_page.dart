@@ -7,9 +7,11 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:truetask_app/models/task.dart';
 import 'package:truetask_app/models/workspace.dart';
 import 'package:truetask_app/screen/login_page.dart';
+import 'package:truetask_app/screen/workspaceTask_page.dart';
 import 'package:truetask_app/services/fetchWorkspace.dart';
+import 'package:truetask_app/utils/routes.dart';
 import 'package:truetask_app/viewmodels/authUser.dart';
-import 'package:truetask_app/viewmodels/getTask.dart';
+import 'package:truetask_app/services/fetchTask.dart';
 import 'package:truetask_app/viewmodels/getWorkspace.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -61,8 +63,11 @@ class _DashboardPageState extends State<DashboardPage>
         ),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.person_outline),
+            onPressed: () => _showCreate(),
+            icon: const Icon(
+              Icons.add_box_rounded,
+              color: Colors.blue,
+            ),
           ),
         ],
       ),
@@ -74,6 +79,13 @@ class _DashboardPageState extends State<DashboardPage>
                 color: Colors.blue,
               ),
               child: Text('test'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text("Dashboard"),
+              onTap: () {
+                Navigator.of(context).pushReplacementNamed(dashboardPage);
+              },
             ),
             ListTile(
               leading: const Icon(Icons.logout),
@@ -157,6 +169,104 @@ class _DashboardPageState extends State<DashboardPage>
           ],
         ),
       ),
+    );
+  }
+
+  _showCreate() {
+    final formKey = GlobalKey<FormState>();
+    String? workspaceName, workspaceDesc;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Column(
+          children: [
+            Card(
+              elevation: 4.0,
+              color: Colors.white,
+              margin: const EdgeInsets.only(top: 86),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "create workspace",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      TextFormField(
+                        cursorColor: Colors.blue,
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                          hintText: "nama workspace",
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'wajib disi';
+                          }
+                          workspaceName = value;
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                      TextFormField(
+                        cursorColor: Colors.blue,
+                        keyboardType: TextInputType.text,
+                        // obscureText: _secureText,
+                        decoration: InputDecoration(
+                          hintText: "description",
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'wajib diisi';
+                          }
+                          workspaceDesc = value;
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                      ElevatedButton(
+                        child: Text(
+                          "create",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                            decoration: TextDecoration.none,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (formKey.currentState!.validate()) {
+                            final createdWorkspace = await FetchWorkspace()
+                                .createWorkspace(
+                                    name: workspaceName!,
+                                    description: workspaceDesc!);
+                            if (mounted) {
+                              Navigator.pop(context);
+                              Navigator.of(context).pushReplacementNamed(
+                                  workspacePage,
+                                  arguments: createdWorkspace);
+                            }
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -249,39 +359,61 @@ class OverviewTab extends StatefulWidget {
   State<OverviewTab> createState() => _OverviewTabState();
 }
 
-class _OverviewTabState extends State<OverviewTab> {
-  ListWorkspaceViewModel listWorkspace = ListWorkspaceViewModel();
+class _OverviewTabState extends State<OverviewTab>
+    with AutomaticKeepAliveClientMixin<OverviewTab> {
+  final _myData = ListWorkspaceViewModel();
+  final apiWorkspace = FetchWorkspace();
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _myData.fetchWorkspaces();
+  }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Center(
       child: FutureBuilder<List<WorkspaceViewModel>?>(
-        future: listWorkspace.fetchWorkspaces(),
+        future: _myData.fetchWorkspaces(),
         builder: (context, snapshot) {
-          print(snapshot.connectionState);
           final data = snapshot.data;
-          if (snapshot.connectionState == ConnectionState.done) {
-            print(snapshot.hasData);
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: data!.length,
-                itemBuilder: (context, index) {
-                  return Card(
+          if (snapshot.connectionState != ConnectionState.done) {
+            print(snapshot.connectionState);
+          } else if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: data!.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () => Navigator.of(context).pushNamed(workspacePage,
+                      arguments: data[index].workspace),
+                  child: Card(
                     color: Colors.amber,
                     elevation: 2,
                     child: ListTile(
-                      title: Text(
-                          listWorkspace.workspaces![index].workspace!.name!),
-                      subtitle: Text(listWorkspace
-                          .workspaces![index].workspace!.description!),
-                      trailing: Text(listWorkspace
-                          .workspaces![index].workspace!.ownerId
-                          .toString()),
+                      title: Text(data[index].workspace!.name!),
+                      subtitle: Text(data[index].workspace!.description!),
+                      trailing: IconButton(
+                        onPressed: () {
+                          apiWorkspace
+                              .deleteWorkspace(
+                                  workspaceId: data[index].workspace!.id!)
+                              .then((value) => setState(() {}));
+                        },
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  );
-                },
-              );
-            }
+                  ),
+                );
+              },
+            );
           } else if (snapshot.hasError) {
             return Text('${snapshot.error}');
           }
