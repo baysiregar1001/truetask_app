@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:truetask_app/screen/dashboard_page.dart';
-import 'package:truetask_app/screen/login_page.dart';
+import 'package:truetask_app/screen/dashboard/dashboard_page.dart';
+import 'package:truetask_app/screen/welcome.dart';
 
 class CheckAuth extends StatefulWidget {
   const CheckAuth({super.key});
@@ -35,7 +35,7 @@ class _CheckAuthState extends State<CheckAuth> {
     if (isAuth) {
       child = const DashboardPage();
     } else {
-      child = const LoginPage();
+      child = const Welcome();
     }
     return Scaffold(
       body: child,

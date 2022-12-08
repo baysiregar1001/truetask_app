@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:http/http.dart';
 import 'package:truetask_app/models/task.dart';
 import 'package:truetask_app/models/workspace.dart';
 import 'package:truetask_app/services/api_service.dart';
@@ -29,6 +30,76 @@ class FetchTask {
       return result;
     } else {
       throw Exception('Error fetching data');
+    }
+  }
+
+  Future<Response> createTask({
+    required String workspaceId,
+    required String title,
+    required String description,
+    required String status,
+  }) async {
+    final data = {
+      "workspace_id": workspaceId,
+      "title": title,
+      "description": description,
+      "status": status,
+    };
+
+    const url = '/workspace/task';
+
+    final response = await ApiService().postData(data, url);
+    final body = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      print(body['info']);
+      return response;
+    } else {
+      throw Exception(body['info']);
+    }
+  }
+
+  Future<Response> updateTask({
+    required int taskId,
+    String? taskTitle,
+    String? taskDesc,
+    String? tasStatus,
+    String? taskLabel,
+    String? taskMilestone,
+    String? taskProgress,
+  }) async {
+    String url = '/workspace/task/$taskId';
+
+    final data = {
+      "title": taskTitle,
+      "description": taskDesc,
+      "status": tasStatus,
+      "label": taskLabel,
+      "milestone": taskMilestone,
+      "progress": taskProgress,
+    };
+
+    final response = await ApiService().updatetData(data, url);
+    final body = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      print(body['info']);
+      return response;
+    } else {
+      throw Exception(body['info']);
+    }
+  }
+
+  Future<Response> deleteTask({required int taskId}) async {
+    String url = '/workspace/task/$taskId';
+
+    final response = await ApiService().deleteData(url);
+
+    final body = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      print(body['info']);
+      return response;
+    } else {
+      throw Exception(body['info']);
     }
   }
 }

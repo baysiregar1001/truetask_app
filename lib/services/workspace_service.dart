@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:http/http.dart';
 import 'package:truetask_app/models/workspace.dart';
 import 'package:truetask_app/services/api_service.dart';
 
@@ -32,7 +33,7 @@ class FetchWorkspace {
     }
   }
 
-  Future<Workspace> createWorkspace({
+  Future<Response> createWorkspace({
     required String name,
     required String description,
   }) async {
@@ -41,23 +42,51 @@ class FetchWorkspace {
 
     final response = await ApiService().postData(data, url);
 
+    final body = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body)['data'][0] as Map<String, dynamic>;
-      final result = Workspace.fromJson(data);
-      print(result.id);
-      return result;
+      print(body['info']);
+      return response;
     } else {
-      final body = jsonDecode(response.body);
       throw Exception(body['info']);
     }
   }
 
-  Future<void> deleteWorkspace({required String workspaceId}) async {
+  Future<Response> updateWorkspace({
+    required String workspaceId,
+    String? workspaceName,
+    String? workspaceDesc,
+    String? visibility,
+  }) async {
+    String url = '/workspace/$workspaceId';
+
+    final data = {
+      "name": workspaceName,
+      "description": workspaceDesc,
+      "visibility": visibility
+    };
+
+    final response = await ApiService().updatetData(data, url);
+    final body = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      print(body['info']);
+      return response;
+    } else {
+      throw Exception(body['info']);
+    }
+  }
+
+  Future<Response> deleteWorkspace({required String workspaceId}) async {
     String url = '/workspace/$workspaceId';
 
     final response = await ApiService().deleteData(url);
 
     final body = jsonDecode(response.body);
-    print(body['info']);
+
+    if (response.statusCode == 200) {
+      print(body['info']);
+      return response;
+    } else {
+      throw Exception(body['info']);
+    }
   }
 }

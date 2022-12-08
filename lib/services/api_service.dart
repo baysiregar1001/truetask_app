@@ -38,6 +38,14 @@ class ApiService {
     return response;
   }
 
+  updatetData(data, apiUrl) async {
+    var fullUrl = baseUrl + apiUrl;
+    await _getToken();
+    final response = await http.put(Uri.parse(fullUrl),
+        body: jsonEncode(data), headers: _setHeaders());
+    return response;
+  }
+
   deleteData(apiUrl) async {
     var fullUrl = baseUrl + apiUrl;
     await _getToken();

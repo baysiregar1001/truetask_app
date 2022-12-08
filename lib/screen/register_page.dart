@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:truetask_app/screen/dashboard_page.dart';
-import 'package:truetask_app/screen/login_page.dart';
 import 'package:truetask_app/services/api_service.dart';
+import 'package:truetask_app/utils/routes.dart';
 import 'package:truetask_app/utils/validator.dart';
+import 'package:truetask_app/widgets/input_field.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -45,7 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: Image.asset('assets/Truetask.png')),
+            Center(child: Image.asset('assets/image/Truetask.png')),
             const SizedBox(height: 42),
             const Text(
               "Let’s Get Started",
@@ -65,194 +65,73 @@ class _RegisterPageState extends State<RegisterPage> {
                   Row(
                     children: [
                       Expanded(
-                        child: TextFormField(
-                          controller: _firstnameController,
-                          validator: (value) =>
-                              _validator.validateField(field: value!),
-                          decoration: const InputDecoration(
-                            prefixIcon: Icon(Icons.person_outline),
-                            hintText: 'firstname',
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(color: Colors.blue),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide:
-                                  BorderSide(width: 3, color: Colors.blue),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(color: Colors.red),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide:
-                                  BorderSide(width: 3, color: Colors.blue),
-                            ),
-                          ),
-                        ),
-                      ),
+                          child: InputTextField(
+                        prefixIcon: const Icon(Icons.person_outline),
+                        controller: _firstnameController,
+                        validator: (value) =>
+                            _validator.validateField(field: value!),
+                        hintText: 'first name',
+                      )),
                       const SizedBox(width: 4),
                       Expanded(
-                        child: TextFormField(
+                        child: InputTextField(
                           controller: _lastnameController,
                           validator: (value) =>
-                              Validator().validateField(field: value!),
-                          decoration: const InputDecoration(
-                            hintText: 'lastname',
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(color: Colors.blue),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide:
-                                  BorderSide(width: 3, color: Colors.blue),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(color: Colors.red),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide:
-                                  BorderSide(width: 3, color: Colors.blue),
-                            ),
-                          ),
+                              _validator.validateField(field: value!),
+                          hintText: 'last name',
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  TextFormField(
+                  InputTextField(
+                    prefixIcon: const Icon(Icons.mail_outline),
                     controller: _emailController,
                     validator: (value) =>
-                        Validator().validateField(field: value!),
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.mail_outline),
-                      hintText: 'enter your email',
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(width: 3, color: Colors.blue),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(width: 3, color: Colors.blue),
-                      ),
-                    ),
+                        _validator.validateEmail(email: value!),
+                    hintText: 'enter your email',
+                    obscureText: false,
+                    suffixIcon: const SizedBox(),
                   ),
                   const SizedBox(height: 12),
-                  TextFormField(
+                  InputTextField(
+                    prefixIcon: const Icon(Icons.phone_enabled_outlined),
                     controller: _phoneController,
                     validator: (value) =>
-                        Validator().validateField(field: value!),
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.phone_outlined),
-                      hintText: 'enter your phone number',
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(width: 3, color: Colors.blue),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(width: 3, color: Colors.blue),
-                      ),
-                    ),
+                        _validator.validateField(field: value!),
+                    hintText: 'enter your phone number',
+                    obscureText: false,
+                    suffixIcon: const SizedBox(),
                   ),
                   const SizedBox(height: 12),
-                  TextFormField(
+                  InputTextField(
+                    prefixIcon: const Icon(Icons.lock_outline),
                     controller: _passwordController,
                     validator: (value) =>
-                        Validator().validateField(field: value!),
+                        _validator.validateField(field: value!),
+                    hintText: 'enter your password',
                     obscureText: _obscureText,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock_outline),
-                      hintText: 'enter your password',
-                      suffixIcon: IconButton(
-                        onPressed: () =>
-                            setState(() => _obscureText = !_obscureText),
-                        icon: Icon(
-                          _obscureText
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                      ),
-                      enabledBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(width: 3, color: Colors.blue),
-                      ),
-                      errorBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      focusedErrorBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(width: 3, color: Colors.blue),
+                    suffixIcon: IconButton(
+                      onPressed: () =>
+                          setState(() => _obscureText = !_obscureText),
+                      icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
                       ),
                     ),
                   ),
                   const SizedBox(height: 12),
-                  TextFormField(
+                  InputTextField(
+                    prefixIcon: const Icon(Icons.lock_outline),
                     controller: _confirmPasswordController,
                     validator: (value) =>
-                        Validator().validateField(field: value!),
+                        _validator.validateField(field: value!),
+                    hintText: 'enter your password',
                     obscureText: _obscureText2,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock_outline),
-                      hintText: 'confirm password',
-                      suffixIcon: IconButton(
-                        onPressed: () =>
-                            setState(() => _obscureText2 = !_obscureText2),
-                        icon: Icon(
-                          _obscureText2
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                      ),
-                      enabledBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(width: 3, color: Colors.blue),
-                      ),
-                      errorBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      focusedErrorBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(width: 3, color: Colors.blue),
+                    suffixIcon: IconButton(
+                      onPressed: () =>
+                          setState(() => _obscureText2 = !_obscureText2),
+                      icon: Icon(
+                        _obscureText2 ? Icons.visibility_off : Icons.visibility,
                       ),
                     ),
                   ),
@@ -267,7 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         }
                       },
                       child: _isLoading
-                          ? const CircularProgressIndicator()
+                          ? const CircularProgressIndicator(color: Colors.white)
                           : const Text(
                               "Sign Up",
                               style: TextStyle(
@@ -300,7 +179,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           SizedBox(
                               height: 24,
                               width: 24,
-                              child: Image.asset('assets/google_logo.png')),
+                              child:
+                                  Image.asset('assets/icon/google_logo.png')),
                           const SizedBox(width: 16),
                           const Text(
                             "Sign Up With Google",
@@ -319,12 +199,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushReplacement(MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ));
-                          },
+                          onPressed: () => Navigator.of(context)
+                              .pushReplacementNamed(loginPage),
                           child: const Text("Sign in"))
                     ],
                   )
@@ -359,9 +235,9 @@ class _RegisterPageState extends State<RegisterPage> {
       }, '/auth/login');
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', jsonEncode(body['data']['access_token']));
+      localStorage.setString('user', jsonEncode(body['data']['user']));
       if (mounted) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const DashboardPage()));
+        Navigator.of(context).pushReplacementNamed(dashboardPage);
       }
     } else {
       _showMsg(body['info']);

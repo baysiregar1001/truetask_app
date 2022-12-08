@@ -2,13 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:truetask_app/screen/dashboard_page.dart';
-import 'package:truetask_app/screen/profilepage.dart';
-import 'package:truetask_app/screen/register_page.dart';
 import 'package:truetask_app/services/api_service.dart';
-import 'package:truetask_app/services/fetchUserProfile.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
+import 'package:truetask_app/utils/routes.dart';
 import 'package:truetask_app/utils/validator.dart';
+import 'package:truetask_app/widgets/input_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -42,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: Image.asset('assets/Truetask.png')),
+            Center(child: Image.asset('assets/image/Truetask.png')),
             const SizedBox(height: 42),
             const Text(
               "LOGIN",
@@ -55,71 +52,36 @@ class _LoginPageState extends State<LoginPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  TextFormField(
-                    controller: _emailController,
-                    validator: (value) =>
-                        _validator.validateField(field: value!),
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.mail_outline),
-                      hintText: 'Enter Your Email',
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(width: 3, color: Colors.blue),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(width: 3, color: Colors.blue),
-                      ),
-                    ),
-                  ),
+                  InputTextField(
+                      prefixIcon: const Icon(Icons.mail_outline),
+                      controller: _emailController,
+                      validator: (value) =>
+                          _validator.validateEmail(email: value!),
+                      hintText: 'enter your email',
+                      obscureText: false,
+                      suffixIcon: const SizedBox()),
                   const SizedBox(height: 12),
-                  TextFormField(
+                  InputTextField(
+                    prefixIcon: const Icon(Icons.lock_outline),
                     controller: _passwordController,
                     validator: (value) =>
-                        _validator.validateField(field: value!),
+                        _validator.validatePassword(password: value!),
+                    hintText: 'enter your password',
                     obscureText: _obscureText,
-                    decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        hintText: 'Password',
-                        suffixIcon: IconButton(
-                          onPressed: () =>
-                              setState(() => _obscureText = !_obscureText),
-                          icon: Icon(
-                            _obscureText
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          borderSide: BorderSide(color: Colors.blue),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          borderSide: BorderSide(width: 3, color: Colors.blue),
-                        ),
-                        errorBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                        focusedErrorBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          borderSide: BorderSide(width: 3, color: Colors.blue),
-                        )),
+                    suffixIcon: IconButton(
+                      onPressed: () =>
+                          setState(() => _obscureText = !_obscureText),
+                      icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   GestureDetector(
                     onTap: () {
                       setState(() {
                         _rememberMe = !_rememberMe;
+                        print(_rememberMe);
                       });
                     },
                     child: Row(
@@ -156,7 +118,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.of(context)
+                        .pushReplacementNamed(forgetPasswordPage),
                     child: const Text("Forgot Password"),
                   ),
                   const SizedBox(height: 48),
@@ -168,13 +131,10 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushReplacement(MaterialPageRoute(
-                              builder: (context) => const RegisterPage(),
-                            ));
-                          },
-                          child: const Text("Create One"))
+                        onPressed: () => Navigator.of(context)
+                            .pushReplacementNamed(registerPage),
+                        child: const Text("Create One"),
+                      )
                     ],
                   )
                 ],
@@ -199,9 +159,12 @@ class _LoginPageState extends State<LoginPage> {
     if (res.statusCode == 200) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', jsonEncode(body['data']['access_token']));
+      localStorage.setString('user', jsonEncode(body['data']['user']));
+      if (_rememberMe == true) {
+        localStorage.setBool('rememberMe', true);
+      }
       if (mounted) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const DashboardPage()));
+        Navigator.of(context).pushReplacementNamed(dashboardPage);
       }
     } else {
       _showMsg(body['info']);

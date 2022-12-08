@@ -1,16 +1,11 @@
-import 'package:truetask_app/models/task.dart';
 import 'package:truetask_app/models/workspace.dart';
-import 'package:truetask_app/services/fetchTask.dart';
+import 'package:truetask_app/services/task_service.dart';
 
 class ListTaskViewModel {
-  // Workspace? workspace;
-  // List<Task>? tasks;
   WorkspaceTasks? workspaceTasks;
 
   Future<WorkspaceTasks?> fetchTasks(workspaceId) async {
     final result = await FetchTask().getAllTask(workspaceId);
-    // workspace = result!.workspace;
-    // tasks = result.tasks;
     workspaceTasks = WorkspaceTasks(result);
     return workspaceTasks;
   }

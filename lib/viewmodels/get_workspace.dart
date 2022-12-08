@@ -1,5 +1,5 @@
 import 'package:truetask_app/models/workspace.dart';
-import 'package:truetask_app/services/fetchWorkspace.dart';
+import 'package:truetask_app/services/workspace_service.dart';
 
 class ListWorkspaceViewModel {
   List<WorkspaceViewModel>? workspaces;
