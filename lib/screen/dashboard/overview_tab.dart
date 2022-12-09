@@ -93,7 +93,8 @@ class _OverviewTabState extends State<OverviewTab>
               style: TextStyle(color: Colors.black),
             ),
             trailing: IconButton(
-              onPressed: () => Navigator.of(context).pushNamed(taskPage),
+              onPressed: () => Navigator.of(context)
+                  .pushNamed(taskPage, arguments: workspaceId),
               icon: const Icon(Icons.arrow_forward_ios),
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:truetask_app/models/workspace.dart';
 import 'package:truetask_app/services/task_service.dart';
+import 'package:truetask_app/services/workspace_service.dart';
 import 'package:truetask_app/utils/routes.dart';
 import 'package:truetask_app/viewmodels/get_tasks.dart';
 
@@ -12,12 +13,8 @@ class ProjectDetailsPage extends StatefulWidget {
 }
 
 class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
-  // var _value;
-
   final listTaskViewModel = ListTaskViewModel();
 
-  List<String> items = ["Item 1", "Item 2", "Item 3"];
-  String? selectedItem = "Item 1";
   @override
   Widget build(BuildContext context) {
     final workspace = ModalRoute.of(context)!.settings.arguments as Workspace;
@@ -109,241 +106,344 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
         //   ),
         // ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              leading: Image.asset('assets/icon/ourproject.png'),
-              title: Text(
-                workspace.name!,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              trailing: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.more_horiz),
-              ),
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListTile(
+            leading: Image.asset('assets/icon/ourproject.png'),
+            title: Text(
+              workspace.name!,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: Text(
-                "Project tasks",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+            trailing: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.more_horiz),
             ),
-            Expanded(
-              child: FutureBuilder<WorkspaceTasks?>(
-                future: listTaskViewModel.fetchTasks(workspace.id),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasData) {
-                    final data = snapshot.data!.workspaceMain!;
-                    return ListView.builder(
-                      itemCount: data.tasks!.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          elevation: 3,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(16),
+            child: Text(
+              "Project tasks",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+          FutureBuilder<WorkspaceTasks?>(
+            future: listTaskViewModel.fetchTasks(workspace.id),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasData) {
+                final data = snapshot.data!.workspaceMain!;
+
+                return Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: [
+                        ExpansionTile(
+                          title: const Text(
+                            "Open Tasks",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
                           ),
-                          color: Colors.white,
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            // height: 140,
-                            width: MediaQuery.of(context).size.width,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 200,
-                                      child: Text(
-                                        data.tasks![index].title!,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                        overflow: TextOverflow.fade,
-                                      ),
-                                    ),
-                                    Stack(
-                                      clipBehavior: Clip.none,
-                                      alignment: AlignmentDirectional.centerEnd,
-                                      children: const [
-                                        Positioned(
-                                          right: 45,
-                                          child: CircleAvatar(
-                                            radius: 16,
-                                            backgroundImage: AssetImage(
-                                              'assets/image/Avatar1.png',
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          right: 30,
-                                          child: CircleAvatar(
-                                            radius: 16,
-                                            backgroundImage: AssetImage(
-                                              'assets/image/Avatar2.png',
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          right: 15,
-                                          child: CircleAvatar(
-                                            radius: 16,
-                                            backgroundImage: AssetImage(
-                                              'assets/image/Avatar3.png',
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.amber,
-                                            radius: 16,
-                                            child: Text(
-                                              "+4",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                          children: [
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: data.tasks!.length,
+                              itemBuilder: (context, index) {
+                                if (data.tasks![index].progress != "TODO" &&
+                                    data.tasks![index].progress !=
+                                        "IN PROGRESS" &&
+                                    data.tasks![index].progress != "DONE") {
+                                  return _taskCard(data, index, context);
+                                }
+                                return const SizedBox();
+                              },
+                            )
+                          ],
+                        ),
+                        ExpansionTile(
+                          title: const Text(
+                            "To Do Tasks",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          children: [
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: data.tasks!.length,
+                              itemBuilder: (context, index) {
+                                if (data.tasks![index].progress == "TODO") {
+                                  return _taskCard(data, index, context);
+                                }
+                                return const SizedBox();
+                              },
+                            )
+                          ],
+                        ),
+                        ExpansionTile(
+                          title: const Text(
+                            "In Progress Tasks",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          children: [
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: data.tasks!.length,
+                              itemBuilder: (context, index) {
+                                if (data.tasks![index].progress ==
+                                    "IN PROGRESS") {
+                                  return _taskCard(data, index, context);
+                                }
+                                return const SizedBox();
+                              },
+                            )
+                          ],
+                        ),
+                        ExpansionTile(
+                          title: const Text(
+                            "Done Tasks",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          children: [
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: data.tasks!.length,
+                              itemBuilder: (context, index) {
+                                if (data.tasks![index].progress == "DONE") {
+                                  return _taskCard(data, index, context);
+                                }
+                                return const SizedBox();
+                              },
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              } else {
+                return const Center(child: Text("No task"));
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color _buttonColor(progress) {
+    Color color = Colors.grey;
+    switch (progress) {
+      case "OPEN":
+        color = Colors.grey;
+        break;
+      case "TODO":
+        color = Colors.blue;
+        break;
+      case "IN PROGRESS":
+        color = Colors.green;
+        break;
+      case "DONE":
+        color = Colors.amber;
+        break;
+      default:
+    }
+    return color;
+  }
+
+  Color _textButtonColor(progress) {
+    if (progress == "DONE" || progress == "TODO" || progress == "IN PROGRESS") {
+      return Colors.white;
+    } else {
+      return Colors.black;
+    }
+  }
+
+  Widget _taskCard(WorkspaceMain data, int index, BuildContext context) {
+    return Card(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(
+        children: [
+          ListTile(
+            // leading: CircleAvatar(
+            //   backgroundImage: AssetImage(""),
+            // ),
+            title: Text(
+              data.tasks![index].title!,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(
+                    top: 14,
+                  ),
+                ),
+                Row(
+                  children: const [
+                    Icon(
+                      Icons.date_range,
+                      color: Colors.grey,
+                    ),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      "01/01/2021 - 01/02.2021",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text("Delete Task"),
+                            content: const SizedBox(
+                              height: 20,
+                              child: Text(
+                                "Are you sure to delete this task?",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
                                 ),
-                                const SizedBox(height: 16),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Icon(
-                                      Icons.date_range,
-                                      size: 16,
-                                      color: Colors.grey,
-                                    ),
-                                    SizedBox(width: 4),
-                                    Text("12-11-2022"),
-                                    SizedBox(width: 8),
-                                    Expanded(
-                                        child: Divider(
-                                            thickness: 1, color: Colors.grey)),
-                                    SizedBox(width: 8),
-                                    Icon(
-                                      Icons.date_range,
-                                      size: 16,
-                                      color: Colors.blue,
-                                    ),
-                                    Text("12-11-2022",
-                                        style: TextStyle(color: Colors.blue))
-                                  ],
-                                ),
-                                const SizedBox(height: 12),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {
-                                        showDialog<String>(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              AlertDialog(
-                                            title: const Text("Delete Task"),
-                                            content: const SizedBox(
-                                              height: 20,
-                                              child: Text(
-                                                "Are you sure to delete this task?",
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text(
-                                                  "No",
-                                                  style: TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  FetchTask()
-                                                      .deleteTask(
-                                                          taskId: data
-                                                              .tasks![index]
-                                                              .id!)
-                                                      .then((value) =>
-                                                          setState(() {}));
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text(
-                                                  "Yes",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                      child: const Text(
-                                        "Delete",
-                                        style: TextStyle(
-                                            color: Colors.red, fontSize: 12),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {},
-                                      child: const Text(
-                                        "Update",
-                                        style: TextStyle(
-                                            color: Colors.blue, fontSize: 12),
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    const Text(
-                                      "View Detail",
-                                      style: TextStyle(
-                                        color: Color.fromARGB(255, 73, 0, 217),
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(
-                                        Icons.arrow_forward,
-                                        color: Color.fromARGB(255, 73, 0, 217),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                              ),
                             ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context, "No");
+                                },
+                                child: const Text(
+                                  "No",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  FetchTask()
+                                      .deleteTask(
+                                          taskId: data.tasks![index].id!)
+                                      .then((value) => setState(() {}));
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  "Yes",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                            ],
                           ),
                         );
                       },
-                    );
-                  } else {
-                    return const Center(child: Text("No task"));
-                  }
-                },
-              ),
+                      child: const Text(
+                        "Delete",
+                        style: TextStyle(color: Colors.red, fontSize: 12),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(updateTaskPage,
+                                arguments: data.tasks![index])
+                            .then((value) => setState(() {}));
+                      },
+                      child: const Text(
+                        "Update",
+                        style: TextStyle(color: Colors.black, fontSize: 12),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    SizedBox(
+                      height: 20,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                _buttonColor(data.tasks![index].progress),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15))),
+                        onPressed: () async {
+                          String taskProgress = data.tasks![index].progress!;
+                          switch (taskProgress) {
+                            case "OPEN":
+                              taskProgress = "TODO";
+                              break;
+                            case "TODO":
+                              taskProgress = "IN PROGRESS";
+                              break;
+                            case "IN PROGRESS":
+                              taskProgress = "DONE";
+                              break;
+                            case "DONE":
+                              taskProgress = "OPEN";
+                              break;
+                            default:
+                          }
+
+                          final res = await FetchTask().updateTask(
+                            taskId: data.tasks![index].id!,
+                            taskTitle: data.tasks![index].title,
+                            taskDesc: data.tasks![index].description,
+                            tasStatus: data.tasks![index].status,
+                            taskLabel: data.tasks![index].label,
+                            taskMilestone: data.tasks![index].milestone,
+                            taskProgress: taskProgress,
+                          );
+                          if (res.statusCode == 200) {
+                            setState(() {});
+                          }
+                        },
+                        child: Text(
+                          data.tasks![index].progress!,
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: _textButtonColor(
+                                  data.tasks![index].progress)),
+                        ),
+
+                        // child: Text(
+                        //   data.tasks![index].progress!,
+                        //   style: TextStyle(color: Colors.black, fontSize: 12),
+                        // ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+            trailing: const Icon(
+              Icons.info_outline,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -118,8 +118,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: () => Navigator.of(context)
-                        .pushReplacementNamed(forgetPasswordPage),
+                    onPressed: () =>
+                        Navigator.of(context).pushNamed(forgetPasswordPage),
                     child: const Text("Forgot Password"),
                   ),
                   const SizedBox(height: 48),

@@ -10,14 +10,16 @@ import 'package:truetask_app/screen/projects/add_project.dart';
 import 'package:truetask_app/screen/projects/create_meeting.dart';
 import 'package:truetask_app/screen/projects/create_team.dart';
 import 'package:truetask_app/screen/projects/meeting.dart';
+import 'package:truetask_app/screen/projects/project_detail.dart';
 import 'package:truetask_app/screen/projects/project_details.dart';
 import 'package:truetask_app/screen/projects/projects.dart';
 import 'package:truetask_app/screen/projects/team.dart';
 import 'package:truetask_app/screen/projects/update_project.dart';
 import 'package:truetask_app/screen/register_page.dart';
 import 'package:truetask_app/screen/splashscreen/splash.dart';
-import 'package:truetask_app/screen/task_page.dart';
+import 'package:truetask_app/screen/tasks/task.dart';
 import 'package:truetask_app/screen/tasks/create_task.dart';
+import 'package:truetask_app/screen/tasks/update_task.dart';
 import 'package:truetask_app/screen/welcome.dart';
 
 const String splashPage = "splash-page";
@@ -37,6 +39,7 @@ const String addProjectPage = "add-project-page";
 const String updateProjectPage = "update-project-page";
 const String projectTeamPage = "project-team-page";
 const String createTaskPage = "create-task-page";
+const String updateTaskPage = "update-task-page";
 const String meetingPage = "meeting-page";
 const String createMeetingPage = "create-meeting-page";
 const String createTeamPage = "create-team-page";
@@ -65,7 +68,7 @@ Route<dynamic> controller(RouteSettings settings) {
     case projectPage:
       return MaterialPageRoute(builder: (context) => const Projects());
     case taskPage:
-      return MaterialPageRoute(builder: (context) => const TaskPage());
+      return MaterialPageRoute(builder: (context) => const OurTask());
     case projectDetailPage:
       return MaterialPageRoute(
           builder: (context) => const ProjectDetailsPage(), settings: settings);
@@ -81,6 +84,9 @@ Route<dynamic> controller(RouteSettings settings) {
     case createTaskPage:
       return MaterialPageRoute(
           builder: (context) => const CreateTask(), settings: settings);
+    case updateTaskPage:
+      return MaterialPageRoute(
+          builder: (context) => const UpdateTask(), settings: settings);
     case meetingPage:
       return MaterialPageRoute(builder: (context) => const Meeting());
     case createMeetingPage:

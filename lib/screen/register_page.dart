@@ -220,7 +220,7 @@ class _RegisterPageState extends State<RegisterPage> {
     dynamic data = {
       "first_name": _firstnameController.text,
       "last_name": _lastnameController.text,
-      "username": _usernameController.text + _lastnameController.text,
+      "username": _firstnameController.text + _lastnameController.text,
       "email": _emailController.text,
       "phone_number": _phoneController.text,
       "password": _passwordController.text,
@@ -229,15 +229,19 @@ class _RegisterPageState extends State<RegisterPage> {
     var res = await ApiService().auth(data, '/auth/register');
     var body = jsonDecode(res.body);
     if (res.statusCode == 200) {
-      await ApiService().auth({
+      final loginRes = await ApiService().auth({
         "email": _emailController.text,
         "password": _passwordController.text,
       }, '/auth/login');
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.setString('token', jsonEncode(body['data']['access_token']));
-      localStorage.setString('user', jsonEncode(body['data']['user']));
-      if (mounted) {
-        Navigator.of(context).pushReplacementNamed(dashboardPage);
+      if (loginRes.statusCode == 200) {
+        final body = jsonDecode(loginRes.body);
+        SharedPreferences localStorage = await SharedPreferences.getInstance();
+        localStorage.setString(
+            'token', jsonEncode(body['data']['access_token']));
+        localStorage.setString('user', jsonEncode(body['data']['user']));
+        if (mounted) {
+          Navigator.of(context).pushReplacementNamed(dashboardPage);
+        }
       }
     } else {
       _showMsg(body['info']);

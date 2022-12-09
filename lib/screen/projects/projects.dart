@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:truetask_app/screen/projects/project_detail.dart';
 import 'package:truetask_app/services/workspace_service.dart';
 import 'package:truetask_app/utils/routes.dart';
 import 'package:truetask_app/viewmodels/get_workspace.dart';
@@ -295,6 +296,9 @@ class _CategoryProjectState extends State<CategoryProject> {
                                           Navigator.of(context).pushNamed(
                                               projectDetailPage,
                                               arguments: data[index].workspace);
+                                          // Navigator.of(context).pushNamed(
+                                          //     projectDetailPage,
+                                          //     arguments: data[index].workspace);
                                         },
                                         icon: const Icon(
                                           Icons.arrow_forward,

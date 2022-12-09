@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: SeacrhPage(),
+      // home: OurTask(),
       onGenerateRoute: route.controller,
       initialRoute: route.splashPage,
     );
