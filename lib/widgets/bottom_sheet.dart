@@ -89,10 +89,9 @@ class _BottomSheetCreateState extends State<BottomSheetCreate> {
                       width: MediaQuery.of(context).size.width,
                       height: 48,
                       child: ElevatedButton(
-                        onPressed: () async {
+                        onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            final createdWorkspace =
-                                await FetchWorkspace().createWorkspace(
+                            FetchWorkspace().createWorkspace(
                               name: nameController.text,
                               description: descController.text,
                             );

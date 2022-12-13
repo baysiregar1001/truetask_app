@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:truetask_app/screen/projects/project_detail.dart';
 import 'package:truetask_app/services/workspace_service.dart';
 import 'package:truetask_app/utils/routes.dart';
 import 'package:truetask_app/viewmodels/get_workspace.dart';

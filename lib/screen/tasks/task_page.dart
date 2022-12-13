@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import 'package:truetask_app/models/workspace.dart';
 import 'package:truetask_app/utils/routes.dart';
 import 'package:truetask_app/viewmodels/get_tasks.dart';
 
@@ -195,7 +194,7 @@ class _TaskPageState extends State<TaskPage>
                         return GridView.builder(
                           itemCount: data.tasks!.length,
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2, crossAxisSpacing: 10),
                           itemBuilder: (context, index) {
                             return Card(
@@ -217,7 +216,7 @@ class _TaskPageState extends State<TaskPage>
                                       ),
                                       child: Text(
                                         data.tasks![index].title!,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
                                       ),
@@ -233,18 +232,18 @@ class _TaskPageState extends State<TaskPage>
                                         children: [
                                           Row(
                                             children: [
-                                              Icon(
+                                              const Icon(
                                                 Icons.date_range_outlined,
                                                 color: Colors.blue,
                                                 size: 20,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 8,
                                               ),
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
-                                                children: [
+                                                children: const [
                                                   Text(
                                                     "Deadline",
                                                     style: TextStyle(
@@ -262,23 +261,23 @@ class _TaskPageState extends State<TaskPage>
                                               ),
                                             ],
                                           ),
-                                          Padding(
+                                          const Padding(
                                               padding:
                                                   EdgeInsets.only(bottom: 4)),
                                           Row(
                                             children: [
-                                              Icon(
+                                              const Icon(
                                                 Icons.details_outlined,
                                                 color: Colors.orange,
                                                 size: 20,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 8,
                                               ),
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
-                                                children: [
+                                                children: const [
                                                   Text(
                                                     "Priority",
                                                     style: TextStyle(
@@ -296,23 +295,23 @@ class _TaskPageState extends State<TaskPage>
                                               ),
                                             ],
                                           ),
-                                          Padding(
+                                          const Padding(
                                               padding:
                                                   EdgeInsets.only(bottom: 4)),
                                           Row(
                                             children: [
-                                              Icon(
+                                              const Icon(
                                                 Icons.done,
                                                 color: Colors.black,
                                                 size: 20,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 8,
                                               ),
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
-                                                children: [
+                                                children: const [
                                                   Text(
                                                     "Done",
                                                     style: TextStyle(

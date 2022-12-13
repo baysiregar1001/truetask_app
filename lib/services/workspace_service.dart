@@ -9,9 +9,9 @@ class FetchWorkspace {
     String url = '/workspace/$id';
     final response = await ApiService().getData(url);
     if (response.statusCode == 200) {
-      Map body = jsonDecode(response.body);
+      final body = jsonDecode(response.body) as Map<String, dynamic>;
       // print(body);
-      final result = Workspace.fromJson(jsonDecode(body['data']['workspace']));
+      final result = Workspace.fromJson(body['data']['workspace']);
       return result;
     } else {
       throw Exception('error fetching data');
@@ -65,7 +65,7 @@ class FetchWorkspace {
       "visibility": visibility
     };
 
-    final response = await ApiService().updatetData(data, url);
+    final response = await ApiService().updateData(data, url);
     final body = jsonDecode(response.body);
     if (response.statusCode == 200) {
       print(body['info']);
@@ -78,10 +78,37 @@ class FetchWorkspace {
   Future<Response> deleteWorkspace({required String workspaceId}) async {
     String url = '/workspace/$workspaceId';
 
-    final response = await ApiService().deleteData(url);
+    final response = await ApiService().deleteData(null, url);
 
     final body = jsonDecode(response.body);
 
+    if (response.statusCode == 200) {
+      print(body['info']);
+      return response;
+    } else {
+      throw Exception(body['info']);
+    }
+  }
+
+  Future<Response> inviteTeam(String workspaceId, String email) async {
+    String url = '/workspace/invite/$workspaceId';
+
+    final data = {"email": email};
+
+    final response = await ApiService().postData(data, url);
+
+    return response;
+  }
+
+  Future<Response> removeTeam(
+      {required String workspaceId, required String email}) async {
+    String url = '/workspace/remove/$workspaceId';
+
+    final data = {"email": email};
+
+    final response = await ApiService().deleteData(data, url);
+
+    final body = jsonDecode(response.body);
     if (response.statusCode == 200) {
       print(body['info']);
       return response;

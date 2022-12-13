@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(30),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -117,12 +117,34 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 48,
+                    child: OutlinedButton(
+                      onPressed: () {},
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                              height: 24,
+                              width: 24,
+                              child:
+                                  Image.asset('assets/icon/google_logo.png')),
+                          const SizedBox(width: 16),
+                          const Text(
+                            "Sign Up With Google",
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   TextButton(
                     onPressed: () =>
                         Navigator.of(context).pushNamed(forgetPasswordPage),
                     child: const Text("Forgot Password"),
                   ),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 28),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

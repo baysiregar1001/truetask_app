@@ -78,7 +78,7 @@ class FetchTask {
       "progress": taskProgress,
     };
 
-    final response = await ApiService().updatetData(data, url);
+    final response = await ApiService().updateData(data, url);
     final body = jsonDecode(response.body);
     if (response.statusCode == 200) {
       print(body['info']);
@@ -91,7 +91,7 @@ class FetchTask {
   Future<Response> deleteTask({required int taskId}) async {
     String url = '/workspace/task/$taskId';
 
-    final response = await ApiService().deleteData(url);
+    final response = await ApiService().deleteData(null, url);
 
     final body = jsonDecode(response.body);
 

@@ -32,6 +32,7 @@ class _SeacrhPageState extends State<SeacrhPage> {
         centerTitle: true,
         title: const Text('Search', style: TextStyle(color: Colors.black)),
         iconTheme: const IconThemeData(color: Colors.black),
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -68,7 +69,7 @@ class _SeacrhPageState extends State<SeacrhPage> {
                         hoverColor: Colors.transparent,
                         hintText: "Search",
                       ),
-                      onFieldSubmitted: (value) {},
+                      onTap: () {},
                     ),
                   ),
                 ],
@@ -94,20 +95,6 @@ class _SeacrhPageState extends State<SeacrhPage> {
             // )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class Display extends StatelessWidget {
-  final String text;
-
-  const Display({Key? key, required this.text}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(text),
       ),
     );
   }

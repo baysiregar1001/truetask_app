@@ -43,8 +43,8 @@ class _OverviewTabState extends State<OverviewTab>
               style: TextStyle(color: Colors.black),
             ),
             trailing: IconButton(
-              onPressed: () =>
-                  Navigator.of(context).pushReplacementNamed(projectPage),
+              onPressed: () => Navigator.of(context)
+                  .pushReplacementNamed(projectPage, arguments: workspaceId),
               icon: const Icon(Icons.arrow_forward_ios),
             ),
           ),
@@ -66,6 +66,8 @@ class _OverviewTabState extends State<OverviewTab>
                     onIndexChanged: (index) {
                       setState(() {
                         swiperIndex = index;
+                        workspaceId = data[swiperIndex].workspace!.id;
+                        print(workspaceId);
                       });
                     },
                     layout: SwiperLayout.STACK,
@@ -101,7 +103,7 @@ class _OverviewTabState extends State<OverviewTab>
           FutureBuilder<WorkspaceTasks?>(
             future: fetchTasks(),
             builder: (context, snapshot) {
-              print(workspaceId);
+              // print(workspaceId);
               if (snapshot.connectionState != ConnectionState.done) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.data == null) {

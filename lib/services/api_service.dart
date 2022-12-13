@@ -38,7 +38,7 @@ class ApiService {
     return response;
   }
 
-  updatetData(data, apiUrl) async {
+  updateData(data, apiUrl) async {
     var fullUrl = baseUrl + apiUrl;
     await _getToken();
     final response = await http.put(Uri.parse(fullUrl),
@@ -46,12 +46,13 @@ class ApiService {
     return response;
   }
 
-  deleteData(apiUrl) async {
+  deleteData(data, apiUrl) async {
     var fullUrl = baseUrl + apiUrl;
     await _getToken();
     final response = await http.delete(
       Uri.parse(fullUrl),
       headers: _setHeaders(),
+      body: jsonEncode(data),
     );
     return response;
   }

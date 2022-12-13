@@ -7,6 +7,7 @@ class ListWorkspaceViewModel {
   Future<List<WorkspaceViewModel>?> fetchWorkspaces() async {
     final result = await FetchWorkspace().getAllWorkspace();
     workspaces = result.map((e) => WorkspaceViewModel(e)).toList();
+
     return workspaces;
   }
 }

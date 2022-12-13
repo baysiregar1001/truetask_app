@@ -10,7 +10,6 @@ import 'package:truetask_app/screen/projects/add_project.dart';
 import 'package:truetask_app/screen/projects/create_meeting.dart';
 import 'package:truetask_app/screen/projects/create_team.dart';
 import 'package:truetask_app/screen/projects/meeting.dart';
-import 'package:truetask_app/screen/projects/project_detail.dart';
 import 'package:truetask_app/screen/projects/project_details.dart';
 import 'package:truetask_app/screen/projects/projects.dart';
 import 'package:truetask_app/screen/projects/team.dart';
@@ -68,7 +67,8 @@ Route<dynamic> controller(RouteSettings settings) {
     case projectPage:
       return MaterialPageRoute(builder: (context) => const Projects());
     case taskPage:
-      return MaterialPageRoute(builder: (context) => const OurTask());
+      return MaterialPageRoute(
+          builder: (context) => const OurTask(), settings: settings);
     case projectDetailPage:
       return MaterialPageRoute(
           builder: (context) => const ProjectDetailsPage(), settings: settings);
@@ -80,7 +80,8 @@ Route<dynamic> controller(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (context) => const UpdateProject(), settings: settings);
     case projectTeamPage:
-      return MaterialPageRoute(builder: (context) => const Team());
+      return MaterialPageRoute(
+          builder: (context) => const Team(), settings: settings);
     case createTaskPage:
       return MaterialPageRoute(
           builder: (context) => const CreateTask(), settings: settings);
@@ -92,7 +93,8 @@ Route<dynamic> controller(RouteSettings settings) {
     case createMeetingPage:
       return MaterialPageRoute(builder: (context) => const CreateMeeting());
     case createTeamPage:
-      return MaterialPageRoute(builder: (context) => const CreateTeam());
+      return MaterialPageRoute(
+          builder: (context) => const CreateTeam(), settings: settings);
     default:
       throw ("This route name doesn't exist");
   }

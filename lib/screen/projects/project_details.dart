@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:truetask_app/models/workspace.dart';
 import 'package:truetask_app/services/task_service.dart';
-import 'package:truetask_app/services/workspace_service.dart';
 import 'package:truetask_app/utils/routes.dart';
 import 'package:truetask_app/viewmodels/get_tasks.dart';
 
@@ -39,7 +38,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                       .then((value) => setState(() {}));
                   break;
                 case 1:
-                  Navigator.of(context).pushNamed(projectTeamPage);
+                  Navigator.of(context)
+                      .pushNamed(projectTeamPage, arguments: workspace.id);
                   break;
                 case 2:
                   Navigator.of(context).pushNamed(meetingPage);
@@ -154,10 +154,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                               shrinkWrap: true,
                               itemCount: data.tasks!.length,
                               itemBuilder: (context, index) {
-                                if (data.tasks![index].progress != "TODO" &&
-                                    data.tasks![index].progress !=
-                                        "IN PROGRESS" &&
-                                    data.tasks![index].progress != "DONE") {
+                                if (data.tasks![index].progress == "OPEN") {
                                   return _taskCard(data, index, context);
                                 }
                                 return const SizedBox();
@@ -427,11 +424,6 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                               color: _textButtonColor(
                                   data.tasks![index].progress)),
                         ),
-
-                        // child: Text(
-                        //   data.tasks![index].progress!,
-                        //   style: TextStyle(color: Colors.black, fontSize: 12),
-                        // ),
                       ),
                     ),
                   ],
