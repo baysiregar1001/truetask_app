@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:truetask_app/screen/welcome.dart';
-// import 'package:introduction_screen/introduction_screen.dart';
 
 class OnBoardingPage1 extends StatelessWidget {
   const OnBoardingPage1({super.key});
@@ -26,9 +25,11 @@ class OnBoardingPage1 extends StatelessWidget {
           title: "Be A Creative Person",
           body: "Millions of peoples can’t  Wait to see what you have to share",
           image: Image.asset(
-            "assets/keyboard.jpg",
-            width: 375,
-            height: 428,
+            "assets/image/keyboard.jpg",
+            width: MediaQuery.of(context).size.width,
+            // width: 375,
+            height: MediaQuery.of(context).size.height,
+            fit: BoxFit.fill,
           ),
           decoration: pageDecoration,
         ),
@@ -36,9 +37,11 @@ class OnBoardingPage1 extends StatelessWidget {
           title: "Be A Creative Person",
           body: "Millions of peoples can’t  Wait to see what you have to share",
           image: Image.asset(
-            "assets/keyboard.jpg",
-            width: 375,
-            height: 428,
+            "assets/image/keyboard.jpg",
+            width: MediaQuery.of(context).size.width,
+            // width: 375,
+            height: MediaQuery.of(context).size.height,
+            fit: BoxFit.fill,
           ),
           decoration: pageDecoration,
         ),
@@ -46,19 +49,13 @@ class OnBoardingPage1 extends StatelessWidget {
           title: "Be A Creative Person",
           body: "Millions of peoples can’t  Wait to see what you have to share",
           image: Image.asset(
-            "assets/keyboard.jpg",
-            width: 375,
-            height: 428,
+            "assets/image/keyboard.jpg",
+            width: MediaQuery.of(context).size.width,
+            // width: 375,
+            height: MediaQuery.of(context).size.height,
+            fit: BoxFit.fill,
           ),
           decoration: pageDecoration,
-          // footer: ElevatedButton(
-          //   onPressed: (){
-          //     Navigator.pushReplacement(
-          //     context, MaterialPageRoute(builder: (context) => (Welcome()),),
-          //     );
-          //   },
-          //   child: Text("Get Started"),
-          // ),
         ),
       ],
       onDone: () {
@@ -83,15 +80,10 @@ class OnBoardingPage1 extends StatelessWidget {
         ),
       ),
       next: const Icon(Icons.arrow_forward_ios),
-      done: const Text(
-        "Done",
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+      done: const Icon(Icons.arrow_forward_ios),
       dotsDecorator: const DotsDecorator(
         size: Size(10, 10),
-        color: Colors.blue,
+        color: Colors.grey,
         activeSize: Size(22, 10),
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -100,25 +92,5 @@ class OnBoardingPage1 extends StatelessWidget {
         ),
       ),
     );
-
-    // return Scaffold(
-    //   body: Container(
-    //     child: IntroductionScreen(
-    //       globalBackgroundColor: Colors.white,
-    //       scrollPhysics: BouncingScrollPhysics(),
-    //       pages: [
-    //         PageViewModel(
-    //           titleWidget: Text(
-    //             "Write Title of Page",
-    //             style: TextStyle(
-    //               fontSize: 30,
-    //               fontWeight: FontWeight.bold,
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }
