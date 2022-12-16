@@ -32,7 +32,7 @@ class _TeamState extends State<Team> {
   @override
   Widget build(BuildContext context) {
     final workspaceId = ModalRoute.of(context)!.settings.arguments as String;
-    print(workspaceId);
+    // print(workspaceId);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
@@ -69,7 +69,7 @@ class _TeamState extends State<Team> {
             return ListView.builder(
               itemCount: data!.length,
               itemBuilder: (context, index) {
-                print(data);
+                // print(data);
                 return ListTile(
                   leading: CircleAvatar(
                     child: Text(data[index].userId.toString()),

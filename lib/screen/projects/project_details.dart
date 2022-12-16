@@ -116,10 +116,6 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
               workspace.name!,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            trailing: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.more_horiz),
-            ),
           ),
           const Padding(
             padding: EdgeInsets.all(16),
@@ -138,7 +134,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
 
                 return Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Column(
                       children: [
                         ExpansionTile(
@@ -151,6 +147,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           ),
                           children: [
                             ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: data.tasks!.length,
                               itemBuilder: (context, index) {
@@ -172,6 +169,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           ),
                           children: [
                             ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: data.tasks!.length,
                               itemBuilder: (context, index) {
@@ -193,6 +191,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           ),
                           children: [
                             ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: data.tasks!.length,
                               itemBuilder: (context, index) {
@@ -215,6 +214,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           ),
                           children: [
                             ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: data.tasks!.length,
                               itemBuilder: (context, index) {
@@ -277,9 +277,6 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
       child: Column(
         children: [
           ListTile(
-            // leading: CircleAvatar(
-            //   backgroundImage: AssetImage(""),
-            // ),
             title: Text(
               data.tasks![index].title!,
               style: const TextStyle(
@@ -314,6 +311,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TextButton(
                       onPressed: () {
@@ -375,9 +373,6 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                         style: TextStyle(color: Colors.black, fontSize: 12),
                       ),
                     ),
-                    const SizedBox(
-                      width: 20,
-                    ),
                     SizedBox(
                       height: 20,
                       child: ElevatedButton(
@@ -420,19 +415,28 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                         child: Text(
                           data.tasks![index].progress!,
                           style: TextStyle(
-                              fontSize: 12,
-                              color: _textButtonColor(
-                                  data.tasks![index].progress)),
+                            fontSize: 12,
+                            color:
+                                _textButtonColor(data.tasks![index].progress),
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pushNamed(
+                          taskDetailPage,
+                          arguments: data.tasks![index].id),
+                      child: const Text(
+                        "View Detail",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 73, 0, 217),
+                          fontSize: 12,
                         ),
                       ),
                     ),
                   ],
                 ),
               ],
-            ),
-            trailing: const Icon(
-              Icons.info_outline,
-              color: Colors.white,
             ),
           ),
         ],

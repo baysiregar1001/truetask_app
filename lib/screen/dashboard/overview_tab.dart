@@ -60,14 +60,14 @@ class _OverviewTabState extends State<OverviewTab>
                   width: MediaQuery.of(context).size.width,
                   child: Swiper(
                     index: swiperIndex,
-                    // onTap: (index) => Navigator.of(context).pushNamed(
-                    //     workspacePage,
-                    //     arguments: data[index].workspace),
+                    onTap: (index) => Navigator.of(context).pushNamed(
+                        projectDetailPage,
+                        arguments: data[index].workspace),
                     onIndexChanged: (index) {
                       setState(() {
                         swiperIndex = index;
                         workspaceId = data[swiperIndex].workspace!.id;
-                        print(workspaceId);
+                        // print(workspaceId);
                       });
                     },
                     layout: SwiperLayout.STACK,
@@ -77,6 +77,30 @@ class _OverviewTabState extends State<OverviewTab>
                       return ProjectCard(
                         projectName: data[index].workspace!.name!,
                         description: data[index].workspace!.description!,
+                        userWorkspace: SizedBox(
+                          height: 36,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount:
+                                data[index].workspace!.userWorkspace!.length,
+                            itemBuilder: (context, i) {
+                              final userWorkspace =
+                                  data[index].workspace!.userWorkspace;
+                              return Align(
+                                widthFactor: 0.6,
+                                child: CircleAvatar(
+                                  backgroundColor:
+                                      i.isOdd ? Colors.blue : Colors.amber,
+                                  child: Text(
+                                    userWorkspace![i].userId.toString(),
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                       );
                     },
                     itemCount: data.length,
@@ -117,25 +141,29 @@ class _OverviewTabState extends State<OverviewTab>
                   itemBuilder: (context, index) {
                     return Align(
                       alignment: Alignment.center,
-                      child: Card(
-                        elevation: 3,
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: SizedBox(
-                          width: 300,
-                          height: 100,
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.all(16),
-                            leading: Image.asset('assets/icon/task_icon.png'),
-                            title: Text(data.tasks![index].title!),
-                            subtitle: Row(
-                              children: const [
-                                Icon(Icons.date_range, size: 16),
-                                SizedBox(width: 4),
-                                Text("Deadline : 12-11-2022"),
-                              ],
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pushNamed(
+                            taskDetailPage,
+                            arguments: data.tasks![index].id),
+                        child: Card(
+                          elevation: 3,
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: SizedBox(
+                            width: 300,
+                            child: ListTile(
+                              // contentPadding: const EdgeInsets.all(16),
+                              leading: Image.asset('assets/icon/task_icon.png'),
+                              title: Text(data.tasks![index].title!),
+                              subtitle: Row(
+                                children: const [
+                                  Icon(Icons.date_range, size: 16),
+                                  SizedBox(width: 4),
+                                  Text("Deadline : 12-11-2022"),
+                                ],
+                              ),
                             ),
                           ),
                         ),

@@ -57,7 +57,7 @@ class _SplashState extends State<Splash> {
         if (mounted) {
           Navigator.of(context).pushReplacementNamed(onBoardingPage);
         }
-      } else if (rememberMe == false) {
+      } else if (isAuth == true && rememberMe == false) {
         localStorage.remove('token');
         if (mounted) {
           Navigator.of(context).pushReplacementNamed(loginPage);

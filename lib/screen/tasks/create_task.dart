@@ -213,21 +213,8 @@ class _CreateTaskState extends State<CreateTask> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width / 2,
                   child: ElevatedButton(
-                    onPressed: () async {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      final res = await FetchTask().createTask(
-                          workspaceId: workspaceId,
-                          title: nameController.text,
-                          description: descController.text,
-                          status: '1');
-                      if (res.statusCode == 200) {
-                        Navigator.of(context).pop();
-                      }
-                      setState(() {
-                        _isLoading = false;
-                      });
+                    onPressed: () {
+                      _createTask(workspaceId);
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -247,14 +234,21 @@ class _CreateTaskState extends State<CreateTask> {
     );
   }
 
-  _showLoading() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
+  _createTask(workspaceId) async {
+    setState(() {
+      _isLoading = true;
+    });
+    final res = await FetchTask().createTask(
+        workspaceId: workspaceId,
+        title: nameController.text,
+        description: descController.text,
+        status: '1');
+    if (res.statusCode == 200) {
+      if (!mounted) return;
+      Navigator.of(context).pop();
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

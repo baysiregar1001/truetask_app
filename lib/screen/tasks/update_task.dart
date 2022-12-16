@@ -246,6 +246,7 @@ class _UpdateTaskState extends State<UpdateTask> {
                       taskProgress: taskProgress,
                     );
                     if (res.statusCode == 200) {
+                      if (!mounted) return;
                       Navigator.of(context).pop();
                     }
                     setState(() {

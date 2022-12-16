@@ -136,23 +136,8 @@ class _CreateTeamState extends State<CreateTeam> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 2,
                     child: ElevatedButton(
-                      onPressed: () async {
-                        setState(() {
-                          _isLoading = true;
-                        });
-                        final res = await FetchWorkspace()
-                            .inviteTeam(workspaceId, emailController.text);
-                        if (res.statusCode == 200) {
-                          Navigator.pop(context);
-                        } else {
-                          final body = jsonDecode(res.body);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(body['info'])));
-                        }
-                        setState(() {
-                          _isLoading = false;
-                        });
-                      },
+                      onPressed: () =>
+                          _inviteTeam(workspaceId, emailController.text),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -173,5 +158,24 @@ class _CreateTeamState extends State<CreateTeam> {
         ),
       ),
     );
+  }
+
+  _inviteTeam(workspaceId, email) async {
+    setState(() {
+      _isLoading = true;
+    });
+    final res = await FetchWorkspace().inviteTeam(workspaceId, email);
+    if (res.statusCode == 200) {
+      if (!mounted) return;
+      Navigator.pop(context);
+    } else {
+      final body = jsonDecode(res.body);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(body['info'])));
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 }
