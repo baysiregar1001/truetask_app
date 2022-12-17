@@ -186,6 +186,7 @@ class _UpdateProjectState extends State<UpdateProject> {
                                 visibility: workspace.visibility,
                               );
                               if (res.statusCode == 200) {
+                                if (!mounted) return;
                                 Navigator.of(context).pop();
                               }
                               setState(() {

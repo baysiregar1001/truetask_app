@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:truetask_app/services/api_service.dart';
+import 'package:truetask_app/screen/signup_google.dart';
 import 'package:truetask_app/utils/routes.dart';
 import 'package:truetask_app/utils/validator.dart';
+import 'package:truetask_app/viewmodels/auth_user.dart';
 import 'package:truetask_app/widgets/input_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -81,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () {
                       setState(() {
                         _rememberMe = !_rememberMe;
-                        print(_rememberMe);
+                        // print(_rememberMe);
                       });
                     },
                     child: Row(
@@ -121,7 +122,11 @@ class _LoginPageState extends State<LoginPage> {
                     width: MediaQuery.of(context).size.width,
                     height: 48,
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () =>
+                          Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            const SignGoogle(signText: 'Sign In'),
+                      )),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -132,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                                   Image.asset('assets/icon/google_logo.png')),
                           const SizedBox(width: 16),
                           const Text(
-                            "Sign Up With Google",
+                            "Sign In With Google",
                             style: TextStyle(fontSize: 16, color: Colors.black),
                           ),
                         ],
@@ -172,23 +177,20 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _isLoading = true;
     });
-    dynamic data = {
-      'email': _emailController.text,
-      'password': _passwordController.text,
-    };
-    var res = await ApiService().auth(data, '/auth/login');
-    var body = jsonDecode(res.body);
+
+    final res = await AuthUser().login(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
     if (res.statusCode == 200) {
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.setString('token', jsonEncode(body['data']['access_token']));
-      localStorage.setString('user', jsonEncode(body['data']['user']));
       if (_rememberMe == true) {
+        SharedPreferences localStorage = await SharedPreferences.getInstance();
         localStorage.setBool('rememberMe', true);
       }
-      if (mounted) {
-        Navigator.of(context).pushReplacementNamed(dashboardPage);
-      }
+      if (!mounted) return;
+      Navigator.of(context).pushReplacementNamed(dashboardPage);
     } else {
+      final body = jsonDecode(res.body);
       _showMsg(body['info']);
     }
 

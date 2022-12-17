@@ -51,7 +51,7 @@ class FetchTask {
     final response = await ApiService().postData(data, url);
     final body = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      print(body['info']);
+      // print(body['info']);
       return response;
     } else {
       throw Exception(body['info']);
@@ -81,7 +81,7 @@ class FetchTask {
     final response = await ApiService().updateData(data, url);
     final body = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      print(body['info']);
+      // print(body['info']);
       return response;
     } else {
       throw Exception(body['info']);
@@ -96,10 +96,32 @@ class FetchTask {
     final body = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      print(body['info']);
+      // print(body['info']);
       return response;
     } else {
       throw Exception(body['info']);
     }
+  }
+
+  Future<Response> assignUser(int taskId, int userId) async {
+    String url = '/workspace/task/assign';
+
+    final data = {"user_id": userId, "task_id": taskId};
+
+    final response = await ApiService().postData(data, url);
+    // final body = jsonDecode(response.body);
+    // print(body['info']);
+    return response;
+  }
+
+  Future<Response> removeUserAssign(int taskId, int userId) async {
+    String url = '/workspace/task/delete/$taskId';
+
+    final data = {"user_id": userId};
+
+    final response = await ApiService().deleteData(data, url);
+    // final body = jsonDecode(response.body);
+    // print(body['info']);
+    return response;
   }
 }

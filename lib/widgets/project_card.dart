@@ -5,9 +5,11 @@ class ProjectCard extends StatelessWidget {
     super.key,
     required this.projectName,
     required this.description,
+    required this.userWorkspace,
   });
 
   final String projectName, description;
+  final Widget userWorkspace;
 
   @override
   Widget build(BuildContext context) {
@@ -18,65 +20,19 @@ class ProjectCard extends StatelessWidget {
       ),
       color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: 200,
-                  child: Text(
-                    projectName,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.fade,
-                  ),
+                Text(
+                  projectName,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.fade,
                 ),
-                Stack(
-                  clipBehavior: Clip.none,
-                  alignment: AlignmentDirectional.centerEnd,
-                  children: const [
-                    Positioned(
-                      right: 45,
-                      child: CircleAvatar(
-                        radius: 16,
-                        backgroundImage: AssetImage(
-                          'assets/image/Avatar1.png',
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      right: 30,
-                      child: CircleAvatar(
-                        radius: 16,
-                        backgroundImage: AssetImage(
-                          'assets/image/Avatar2.png',
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      right: 15,
-                      child: CircleAvatar(
-                        radius: 16,
-                        backgroundImage: AssetImage(
-                          'assets/image/Avatar3.png',
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      child: CircleAvatar(
-                        backgroundColor: Colors.amber,
-                        radius: 16,
-                        child: Text(
-                          "+4",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                userWorkspace
               ],
             ),
             const SizedBox(height: 8),

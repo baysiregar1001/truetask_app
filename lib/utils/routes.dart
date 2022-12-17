@@ -16,8 +16,10 @@ import 'package:truetask_app/screen/projects/team.dart';
 import 'package:truetask_app/screen/projects/update_project.dart';
 import 'package:truetask_app/screen/register_page.dart';
 import 'package:truetask_app/screen/splashscreen/splash.dart';
+import 'package:truetask_app/screen/tasks/asignee.dart';
 import 'package:truetask_app/screen/tasks/task.dart';
 import 'package:truetask_app/screen/tasks/create_task.dart';
+import 'package:truetask_app/screen/tasks/task_detail.dart';
 import 'package:truetask_app/screen/tasks/update_task.dart';
 import 'package:truetask_app/screen/welcome.dart';
 
@@ -42,6 +44,8 @@ const String updateTaskPage = "update-task-page";
 const String meetingPage = "meeting-page";
 const String createMeetingPage = "create-meeting-page";
 const String createTeamPage = "create-team-page";
+const String taskDetailPage = "task-detail-page";
+const String taskAsigneePage = "task-asignee-page";
 
 Route<dynamic> controller(RouteSettings settings) {
   switch (settings.name) {
@@ -95,6 +99,12 @@ Route<dynamic> controller(RouteSettings settings) {
     case createTeamPage:
       return MaterialPageRoute(
           builder: (context) => const CreateTeam(), settings: settings);
+    case taskDetailPage:
+      return MaterialPageRoute(
+          builder: (context) => const TaskDetail(), settings: settings);
+    case taskAsigneePage:
+      return MaterialPageRoute(
+          builder: (context) => const TaskAsignee(), settings: settings);
     default:
       throw ("This route name doesn't exist");
   }

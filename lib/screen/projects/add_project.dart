@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:truetask_app/services/workspace_service.dart';
+import 'package:truetask_app/utils/validator.dart';
 
 class AddProject extends StatefulWidget {
   const AddProject({Key? key}) : super(key: key);
@@ -9,11 +10,14 @@ class AddProject extends StatefulWidget {
 }
 
 class _AddProjectState extends State<AddProject> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController startDateController = TextEditingController();
-  TextEditingController endDateController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
+  final descController = TextEditingController();
+  final startDateController = TextEditingController();
+  final endDateController = TextEditingController();
 
   bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,26 +59,66 @@ class _AddProjectState extends State<AddProject> {
                 height: 30,
               ),
               Form(
+                key: formKey,
                 child: Column(
                   children: [
                     // SizedBox(height: 160,),
                     const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Project Name",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
-                        )),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Project Name",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
                     TextFormField(
                       maxLines: 1,
                       controller: nameController,
+                      validator: (value) =>
+                          Validator().validateField(field: value!),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color.fromARGB(255, 234, 234, 234),
                         hintText: "Input project name",
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            color: Colors.white,
+                            width: 1,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            color: Colors.white,
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Project Name",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    TextFormField(
+                      maxLines: 1,
+                      controller: descController,
+                      validator: (value) =>
+                          Validator().validateField(field: value!),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 234, 234, 234),
+                        hintText: "Input project description",
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: const BorderSide(
@@ -177,19 +221,10 @@ class _AddProjectState extends State<AddProject> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width / 2,
                   child: ElevatedButton(
-                    onPressed: () async {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      final res = await FetchWorkspace().createWorkspace(
-                          name: nameController.text,
-                          description: 'project description');
-                      if (res.statusCode == 200) {
-                        Navigator.of(context).pop();
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        _createProject();
                       }
-                      setState(() {
-                        _isLoading = false;
-                      });
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -212,5 +247,20 @@ class _AddProjectState extends State<AddProject> {
         ),
       ),
     );
+  }
+
+  _createProject() async {
+    setState(() {
+      _isLoading = true;
+    });
+    final res = await FetchWorkspace().createWorkspace(
+        name: nameController.text, description: descController.text);
+    if (res.statusCode == 200) {
+      if (!mounted) return;
+      Navigator.of(context).pop();
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

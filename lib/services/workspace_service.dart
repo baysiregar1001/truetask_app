@@ -44,7 +44,7 @@ class FetchWorkspace {
 
     final body = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      print(body['info']);
+      // print(body['info']);
       return response;
     } else {
       throw Exception(body['info']);
@@ -68,7 +68,7 @@ class FetchWorkspace {
     final response = await ApiService().updateData(data, url);
     final body = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      print(body['info']);
+      // print(body['info']);
       return response;
     } else {
       throw Exception(body['info']);
@@ -83,7 +83,7 @@ class FetchWorkspace {
     final body = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      print(body['info']);
+      // print(body['info']);
       return response;
     } else {
       throw Exception(body['info']);
@@ -110,7 +110,7 @@ class FetchWorkspace {
 
     final body = jsonDecode(response.body);
     if (response.statusCode == 200) {
-      print(body['info']);
+      // print(body['info']);
       return response;
     } else {
       throw Exception(body['info']);

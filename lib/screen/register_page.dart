@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:truetask_app/services/api_service.dart';
+import 'package:truetask_app/screen/signup_google.dart';
 import 'package:truetask_app/utils/routes.dart';
 import 'package:truetask_app/utils/validator.dart';
+import 'package:truetask_app/viewmodels/auth_user.dart';
 import 'package:truetask_app/widgets/input_field.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -171,7 +171,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     width: MediaQuery.of(context).size.width,
                     height: 48,
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const SignGoogle(signText: 'Sign Up'))),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -216,33 +219,26 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() {
       _isLoading = true;
     });
-    dynamic data = {
-      "first_name": _firstnameController.text,
-      "last_name": _lastnameController.text,
-      "username": _firstnameController.text + _lastnameController.text,
-      "email": _emailController.text,
-      "phone_number": _phoneController.text,
-      "password": _passwordController.text,
-      "password_confirmation": _confirmPasswordController.text,
-    };
-    var res = await ApiService().auth(data, '/auth/register');
-    var body = jsonDecode(res.body);
+    final res = await AuthUser().register(
+      firstName: _firstnameController.text,
+      lastName: _lastnameController.text,
+      username: "${_firstnameController.text} ${_lastnameController.text}",
+      email: _emailController.text,
+      phoneNumber: _phoneController.text,
+      password: _passwordController.text,
+      confirmPassword: _confirmPasswordController.text,
+    );
     if (res.statusCode == 200) {
-      final loginRes = await ApiService().auth({
-        "email": _emailController.text,
-        "password": _passwordController.text,
-      }, '/auth/login');
+      final loginRes = await AuthUser().login(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
       if (loginRes.statusCode == 200) {
-        final body = jsonDecode(loginRes.body);
-        SharedPreferences localStorage = await SharedPreferences.getInstance();
-        localStorage.setString(
-            'token', jsonEncode(body['data']['access_token']));
-        localStorage.setString('user', jsonEncode(body['data']['user']));
-        if (mounted) {
-          Navigator.of(context).pushReplacementNamed(dashboardPage);
-        }
+        if (!mounted) return;
+        Navigator.of(context).pushReplacementNamed(dashboardPage);
       }
     } else {
+      final body = jsonDecode(res.body);
       _showMsg(body['info']);
     }
 
