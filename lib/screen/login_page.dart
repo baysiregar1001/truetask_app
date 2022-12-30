@@ -33,6 +33,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _checkRememberMe();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -54,13 +61,13 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 children: [
                   InputTextField(
-                      prefixIcon: const Icon(Icons.mail_outline),
-                      controller: _emailController,
-                      validator: (value) =>
-                          _validator.validateEmail(email: value!),
-                      hintText: 'enter your email',
-                      obscureText: false,
-                      suffixIcon: const SizedBox()),
+                    prefixIcon: const Icon(Icons.mail_outline),
+                    controller: _emailController,
+                    validator: (value) =>
+                        _validator.validateEmail(email: value!),
+                    hintText: 'enter your email',
+                    obscureText: false,
+                  ),
                   const SizedBox(height: 12),
                   InputTextField(
                     prefixIcon: const Icon(Icons.lock_outline),
@@ -183,9 +190,11 @@ class _LoginPageState extends State<LoginPage> {
       password: _passwordController.text,
     );
     if (res.statusCode == 200) {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
       if (_rememberMe == true) {
-        SharedPreferences localStorage = await SharedPreferences.getInstance();
-        localStorage.setBool('rememberMe', true);
+        localStorage.setString('rememberMe', _emailController.text);
+      } else {
+        localStorage.remove('rememberMe');
       }
       if (!mounted) return;
       Navigator.of(context).pushReplacementNamed(dashboardPage);
@@ -197,5 +206,15 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  _checkRememberMe() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    final email = localStorage.getString('rememberMe');
+    if (email != null) {
+      setState(() {
+        _emailController.text = email;
+      });
+    }
   }
 }

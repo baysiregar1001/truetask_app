@@ -84,7 +84,7 @@ class _TaskAsigneeState extends State<TaskAsignee> {
             ),
             const Padding(
               padding: EdgeInsets.all(16.0),
-              child: Text("Assigned User",
+              child: Text("Asigned User",
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
             FutureBuilder<Task?>(

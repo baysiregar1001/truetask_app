@@ -240,11 +240,15 @@ class CategoryProject extends StatelessWidget {
                       },
                     );
                   } else {
-                    return const Text("No task");
+                    return const Center(child: Text("No task"));
                   }
                 },
               ),
-              const SizedBox()
+              const SizedBox(
+                child: Center(
+                  child: Text("No task"),
+                ),
+              )
             ],
           ),
         ),

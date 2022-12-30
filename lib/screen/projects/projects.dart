@@ -31,14 +31,6 @@ class _ProjectsState extends State<Projects> {
           ),
           centerTitle: true,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.people_alt,
-              ),
-            ),
-          ],
           elevation: 0,
         ),
         body: CategoryProject(
@@ -132,193 +124,234 @@ class _CategoryProjectState extends State<CategoryProject> {
           Expanded(
             child: TabBarView(
               children: [
-                FutureBuilder<List<WorkspaceViewModel>?>(
-                  future: listWorkspaceViewModel.fetchWorkspaces(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasData) {
-                      final data = snapshot.data!;
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: data.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              padding: const EdgeInsets.only(
-                                  top: 30, right: 30, left: 30, bottom: 15),
-                              decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 194, 227, 243),
-                                  borderRadius: BorderRadius.circular(30)),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    data[index].workspace!.name!,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  const Text(
-                                    "Date: 12/10/2022 - 30/12/2022",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(4),
-                                    child: LinearProgressIndicator(
-                                      minHeight: 7,
-                                      valueColor:
-                                          const AlwaysStoppedAnimation<Color>(
-                                        Color.fromARGB(255, 73, 0, 217),
-                                      ),
-                                      value: 6 / 10,
-                                      backgroundColor: Colors.grey.shade400,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 7,
-                                  ),
-                                  const Text(
-                                    "6/10 Task Completed",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {
-                                          showDialog<String>(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                AlertDialog(
-                                              title:
-                                                  const Text("Delete Project"),
-                                              content: const SizedBox(
-                                                height: 20,
-                                                child: Text(
-                                                  "Are you sure to delete this project?",
+                Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        FutureBuilder<List<WorkspaceViewModel>?>(
+                          future: listWorkspaceViewModel.fetchWorkspaces(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState !=
+                                ConnectionState.done) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else if (snapshot.hasData) {
+                              final data = snapshot.data!;
+                              return ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: data.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: const EdgeInsets.only(
+                                          top: 30,
+                                          right: 30,
+                                          left: 30,
+                                          bottom: 15),
+                                      decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 194, 227, 243),
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            data[index].workspace!.name!,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 12,
+                                          ),
+                                          const Text(
+                                            "Date: 12/10/2022 - 30/12/2022",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            child: LinearProgressIndicator(
+                                              minHeight: 7,
+                                              valueColor:
+                                                  const AlwaysStoppedAnimation<
+                                                      Color>(
+                                                Color.fromARGB(255, 73, 0, 217),
+                                              ),
+                                              value: 6 / 10,
+                                              backgroundColor:
+                                                  Colors.grey.shade400,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 7,
+                                          ),
+                                          const Text(
+                                            "6/10 Task Completed",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  showDialog<String>(
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        AlertDialog(
+                                                      title: const Text(
+                                                          "Delete Project"),
+                                                      content: const SizedBox(
+                                                        height: 20,
+                                                        child: Text(
+                                                          "Are you sure to delete this project?",
+                                                          style: TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize: 14,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context, "No");
+                                                          },
+                                                          child: const Text(
+                                                            "No",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red),
+                                                          ),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            FetchWorkspace()
+                                                                .deleteWorkspace(
+                                                                    workspaceId:
+                                                                        data[index]
+                                                                            .workspace!
+                                                                            .id!)
+                                                                .then((value) =>
+                                                                    setState(
+                                                                        () {}));
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: const Text(
+                                                            "Yes",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                                child: const Text(
+                                                  "Delete",
                                                   style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 14,
-                                                  ),
+                                                      color: Colors.red,
+                                                      fontSize: 12),
                                                 ),
                                               ),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(
-                                                        context, "No");
-                                                  },
-                                                  child: const Text(
-                                                    "No",
-                                                    style: TextStyle(
-                                                        color: Colors.red),
-                                                  ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                          updateProjectPage,
+                                                          arguments: data[index]
+                                                              .workspace)
+                                                      .then((value) =>
+                                                          setState(() {}));
+                                                },
+                                                child: const Text(
+                                                  "Update",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 12),
                                                 ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    FetchWorkspace()
-                                                        .deleteWorkspace(
-                                                            workspaceId:
-                                                                data[index]
-                                                                    .workspace!
-                                                                    .id!)
-                                                        .then((value) =>
-                                                            setState(() {}));
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text(
-                                                    "Yes",
-                                                    style: TextStyle(
-                                                        color: Colors.black),
-                                                  ),
+                                              ),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              const Text(
+                                                "View Detail",
+                                                style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 73, 0, 217),
+                                                  fontSize: 12,
                                                 ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                        child: const Text(
-                                          "Delete",
-                                          style: TextStyle(
-                                              color: Colors.red, fontSize: 12),
-                                        ),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              IconButton(
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                          projectDetailPage,
+                                                          arguments: data[index]
+                                                              .workspace);
+                                                  // Navigator.of(context).pushNamed(
+                                                  //     projectDetailPage,
+                                                  //     arguments: data[index].workspace);
+                                                },
+                                                icon: const Icon(
+                                                  Icons.arrow_forward,
+                                                  color: Color.fromARGB(
+                                                      255, 73, 0, 217),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pushNamed(updateProjectPage,
-                                                  arguments:
-                                                      data[index].workspace)
-                                              .then((value) => setState(() {}));
-                                        },
-                                        child: const Text(
-                                          "Update",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 12),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      const Text(
-                                        "View Detail",
-                                        style: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 73, 0, 217),
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      IconButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pushNamed(
-                                              projectDetailPage,
-                                              arguments: data[index].workspace);
-                                          // Navigator.of(context).pushNamed(
-                                          //     projectDetailPage,
-                                          //     arguments: data[index].workspace);
-                                        },
-                                        icon: const Icon(
-                                          Icons.arrow_forward,
-                                          color:
-                                              Color.fromARGB(255, 73, 0, 217),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    } else {
-                      return const Center(child: Text("No project"));
-                    }
-                  },
+                                    ),
+                                  );
+                                },
+                              );
+                            } else {
+                              return const Text("No project");
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 52)
+                      ],
+                    ),
+                  ),
                 ),
-                const SizedBox()
+                Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: const [
+                        Text("No project"),
+                        SizedBox(height: 52)
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           ),

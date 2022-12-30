@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:truetask_app/screen/welcome.dart';
+import 'package:truetask_app/utils/routes.dart';
 
 class OnBoardingPage1 extends StatelessWidget {
   const OnBoardingPage1({super.key});
@@ -25,7 +25,7 @@ class OnBoardingPage1 extends StatelessWidget {
           title: "Be A Creative Person",
           body: "Millions of peoples can’t  Wait to see what you have to share",
           image: Image.asset(
-            "assets/image/keyboard.jpg",
+            "assets/image/keyboard.png",
             width: MediaQuery.of(context).size.width,
             // width: 375,
             height: MediaQuery.of(context).size.height,
@@ -37,7 +37,7 @@ class OnBoardingPage1 extends StatelessWidget {
           title: "Be A Creative Person",
           body: "Millions of peoples can’t  Wait to see what you have to share",
           image: Image.asset(
-            "assets/image/keyboard.jpg",
+            "assets/image/keyboard.png",
             width: MediaQuery.of(context).size.width,
             // width: 375,
             height: MediaQuery.of(context).size.height,
@@ -49,7 +49,7 @@ class OnBoardingPage1 extends StatelessWidget {
           title: "Be A Creative Person",
           body: "Millions of peoples can’t  Wait to see what you have to share",
           image: Image.asset(
-            "assets/image/keyboard.jpg",
+            "assets/image/keyboard.png",
             width: MediaQuery.of(context).size.width,
             // width: 375,
             height: MediaQuery.of(context).size.height,
@@ -59,12 +59,7 @@ class OnBoardingPage1 extends StatelessWidget {
         ),
       ],
       onDone: () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => (const Welcome()),
-          ),
-        );
+        Navigator.pushReplacementNamed(context, welcomePage);
       },
       showSkipButton: true,
       showNextButton: true,

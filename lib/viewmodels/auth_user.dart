@@ -57,7 +57,6 @@ class AuthUser {
     var response = await ApiService().postData(null, url);
     if (response.statusCode == 200) {
       localStorage.remove('token');
-      localStorage.remove('rememberMe');
     }
     return response;
   }

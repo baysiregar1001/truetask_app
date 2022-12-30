@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:truetask_app/services/task_service.dart';
+import 'package:truetask_app/utils/validator.dart';
 
 class CreateTask extends StatefulWidget {
   const CreateTask({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class _CreateTaskState extends State<CreateTask> {
   TextEditingController descController = TextEditingController();
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool _isLoading = false;
   @override
@@ -60,6 +62,7 @@ class _CreateTaskState extends State<CreateTask> {
                 height: 30,
               ),
               Form(
+                key: formKey,
                 child: Column(
                   children: [
                     const Align(
@@ -75,6 +78,8 @@ class _CreateTaskState extends State<CreateTask> {
                     TextFormField(
                       maxLines: 1,
                       controller: nameController,
+                      validator: (value) =>
+                          Validator().validateField(field: value!),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color.fromARGB(255, 234, 234, 234),
@@ -111,6 +116,8 @@ class _CreateTaskState extends State<CreateTask> {
                     TextFormField(
                       maxLines: 1,
                       controller: descController,
+                      validator: (value) =>
+                          Validator().validateField(field: value!),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color.fromARGB(255, 234, 234, 234),
@@ -214,7 +221,9 @@ class _CreateTaskState extends State<CreateTask> {
                   width: MediaQuery.of(context).size.width / 2,
                   child: ElevatedButton(
                     onPressed: () {
-                      _createTask(workspaceId);
+                      if (formKey.currentState!.validate()) {
+                        _createTask(workspaceId);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -226,6 +235,9 @@ class _CreateTaskState extends State<CreateTask> {
                         : const Text("Create Task"),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 10,
               ),
             ],
           ),
