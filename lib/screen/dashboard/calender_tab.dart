@@ -73,7 +73,7 @@ class _CalendarTabState extends State<CalendarTab>
             ),
             title: Text(
               _selectedDay == null
-                  ? "No day Selected"
+                  ? "No date selected"
                   : "${_selectedDay!.day} ${DateFormat.MMMM().format(_selectedDay!)} ${_selectedDay!.year}",
             ),
           ),

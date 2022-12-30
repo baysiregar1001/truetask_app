@@ -105,10 +105,13 @@ class _AddProjectState extends State<AddProject> {
                     const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Project Name",
+                        "Project Description",
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     TextFormField(
                       maxLines: 1,
@@ -138,7 +141,6 @@ class _AddProjectState extends State<AddProject> {
                     const SizedBox(
                       height: 16,
                     ),
-
                     const Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -239,9 +241,9 @@ class _AddProjectState extends State<AddProject> {
                   ),
                 ),
               ),
-              // SizedBox(
-              //   height: MediaQuery.of(context).size.height / 10,
-              // ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 10,
+              ),
             ],
           ),
         ),

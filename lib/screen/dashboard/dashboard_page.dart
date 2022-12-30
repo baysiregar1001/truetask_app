@@ -48,10 +48,14 @@ class _DashboardPageState extends State<DashboardPage>
               onSelected: (value) {
                 switch (value) {
                   case 0:
-                    Navigator.of(context).pushNamed(addProjectPage);
+                    Navigator.of(context)
+                        .pushNamed(addProjectPage)
+                        .then((value) => setState(() {}));
                     break;
                   case 1:
-                    Navigator.of(context).pushNamed(projectPage);
+                    Navigator.of(context)
+                        .pushNamed(projectPage)
+                        .then((value) => setState(() {}));
                     break;
                   default:
                 }

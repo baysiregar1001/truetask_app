@@ -147,6 +147,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           ),
                           children: [
                             ListView.builder(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: data.tasks!.length,
@@ -169,6 +171,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           ),
                           children: [
                             ListView.builder(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: data.tasks!.length,
@@ -191,6 +195,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           ),
                           children: [
                             ListView.builder(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: data.tasks!.length,
@@ -214,6 +220,8 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
                           ),
                           children: [
                             ListView.builder(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: data.tasks!.length,
@@ -277,6 +285,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage> {
       child: Column(
         children: [
           ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 8),
             title: Text(
               data.tasks![index].title!,
               style: const TextStyle(

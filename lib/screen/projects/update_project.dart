@@ -11,6 +11,7 @@ class UpdateProject extends StatefulWidget {
 
 class _UpdateProjectState extends State<UpdateProject> {
   TextEditingController nameController = TextEditingController();
+  TextEditingController descController = TextEditingController();
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
 
@@ -19,7 +20,6 @@ class _UpdateProjectState extends State<UpdateProject> {
   @override
   Widget build(BuildContext context) {
     final workspace = ModalRoute.of(context)!.settings.arguments as Workspace;
-    // nameController.text = workspace.name!;
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
@@ -75,11 +75,45 @@ class _UpdateProjectState extends State<UpdateProject> {
                         ),
                         TextFormField(
                           maxLines: 1,
-                          controller: nameController,
+                          controller: nameController..text = workspace.name!,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: const Color.fromARGB(255, 234, 234, 234),
-                            hintText: "Input project name",
+                            hintText: "Edit project name",
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                                width: 1,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: const BorderSide(
+                                color: Colors.white,
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Project Description",
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
+                            )),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        TextFormField(
+                          maxLines: 1,
+                          controller: descController
+                            ..text = workspace.description!,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: const Color.fromARGB(255, 234, 234, 234),
+                            hintText: "Edit project description",
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                               borderSide: const BorderSide(

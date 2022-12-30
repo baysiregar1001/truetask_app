@@ -165,11 +165,12 @@ class _CreateTeamState extends State<CreateTeam> {
       _isLoading = true;
     });
     final res = await FetchWorkspace().inviteTeam(workspaceId, email);
+    final body = jsonDecode(res.body);
     if (res.statusCode == 200) {
       if (!mounted) return;
-      Navigator.pop(context);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(body['info'])));
     } else {
-      final body = jsonDecode(res.body);
       if (!mounted) return;
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(body['info'])));

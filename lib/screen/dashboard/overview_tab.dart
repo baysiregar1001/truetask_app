@@ -86,18 +86,30 @@ class _OverviewTabState extends State<OverviewTab>
                                 data[index].workspace!.userWorkspace!.length,
                             itemBuilder: (context, i) {
                               final userWorkspace =
-                                  data[index].workspace!.userWorkspace;
-                              return Align(
-                                widthFactor: 0.6,
-                                child: CircleAvatar(
-                                  backgroundColor:
-                                      i.isOdd ? Colors.blue : Colors.amber,
-                                  child: Text(
-                                    userWorkspace![i].userId.toString(),
-                                    style: const TextStyle(color: Colors.white),
+                                  data[index].workspace!.userWorkspace!;
+                              if (i < 3) {
+                                return Align(
+                                  widthFactor: 0.6,
+                                  child: CircleAvatar(
+                                    backgroundColor:
+                                        i.isOdd ? Colors.blue : Colors.amber,
+                                    child: Text(
+                                      userWorkspace[i].userId.toString(),
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                              } else if (i == 3) {
+                                return Align(
+                                  widthFactor: 0.6,
+                                  child: CircleAvatar(
+                                    child: Text("+${userWorkspace.length - 3}"),
+                                  ),
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
                             },
                           ),
                         ),
@@ -119,8 +131,15 @@ class _OverviewTabState extends State<OverviewTab>
               style: TextStyle(color: Colors.black),
             ),
             trailing: IconButton(
-              onPressed: () => Navigator.of(context)
-                  .pushNamed(taskPage, arguments: workspaceId),
+              onPressed: () {
+                if (workspaceId == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Project tidak ada")));
+                } else {
+                  Navigator.of(context)
+                      .pushNamed(taskPage, arguments: workspaceId);
+                }
+              },
               icon: const Icon(Icons.arrow_forward_ios),
             ),
           ),

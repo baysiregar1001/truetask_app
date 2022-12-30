@@ -76,11 +76,11 @@ class _UpdateTaskState extends State<UpdateTask> {
                     ),
                     TextField(
                       maxLines: 1,
-                      controller: nameController,
+                      controller: nameController..text = task.title!,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color.fromARGB(255, 234, 234, 234),
-                        hintText: "Input task name",
+                        hintText: "Edit task name",
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: const BorderSide(
@@ -110,7 +110,7 @@ class _UpdateTaskState extends State<UpdateTask> {
                     ),
                     TextField(
                       maxLines: 1,
-                      controller: descController,
+                      controller: descController..text = task.description!,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color.fromARGB(255, 234, 234, 234),
@@ -142,8 +142,12 @@ class _UpdateTaskState extends State<UpdateTask> {
                     const SizedBox(
                       height: 10,
                     ),
-                    SizedBox(
+                    Container(
                       width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: const Color.fromARGB(255, 234, 234, 234),
+                      ),
                       child: DropdownButton<String>(
                         isExpanded: true,
                         hint: const Text("Select task progress"),
@@ -229,42 +233,44 @@ class _UpdateTaskState extends State<UpdateTask> {
                   ],
                 ),
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 2,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    final res = await FetchTask().updateTask(
-                      taskId: task.id!,
-                      taskTitle: nameController.text,
-                      taskDesc: descController.text,
-                      tasStatus: task.status,
-                      taskLabel: task.status,
-                      taskMilestone: task.milestone,
-                      taskProgress: taskProgress,
-                    );
-                    if (res.statusCode == 200) {
-                      if (!mounted) return;
-                      Navigator.of(context).pop();
-                    }
-                    setState(() {
-                      _isLoading = false;
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      final res = await FetchTask().updateTask(
+                        taskId: task.id!,
+                        taskTitle: nameController.text,
+                        taskDesc: descController.text,
+                        tasStatus: task.status,
+                        taskLabel: task.status,
+                        taskMilestone: task.milestone,
+                        taskProgress: taskProgress,
+                      );
+                      if (res.statusCode == 200) {
+                        if (!mounted) return;
+                        Navigator.of(context).pop();
+                      }
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
+                    child: _isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text("Update Task"),
                   ),
-                  child: _isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        )
-                      : const Text("Update Task"),
                 ),
               ),
               SizedBox(

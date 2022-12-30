@@ -1,5 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:truetask_app/screen/dashboard/dashboard_page.dart';
+import 'package:truetask_app/utils/routes.dart';
 import 'package:truetask_app/viewmodels/auth_user.dart';
 
 class SignGoogle extends StatelessWidget {
@@ -126,11 +128,10 @@ class SignGoogle extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                 onPressed: () {
-                  AuthUser().login(
-                      email: "betatester2@gmail.com", password: "asdasd");
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => const DashboardPage(),
-                  ));
+                  // AuthUser().login(
+                  //     email: "betatester2@gmail.com", password: "asdasd");
+                  // Navigator.of(context).pushReplacementNamed(dashboardPage);
+                  _login(context);
                 },
                 child: Text(signText),
               ),
@@ -139,5 +140,23 @@ class SignGoogle extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _login(BuildContext context) async {
+    final res = await AuthUser().login(
+      email: "betatester2@gmail.com",
+      password: "asdasd",
+    );
+    if (res.statusCode == 200) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        dashboardPage,
+        (route) => false,
+      );
+    } else {
+      final body = jsonDecode(res.body);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(body['info'])),
+      );
+    }
   }
 }

@@ -183,20 +183,32 @@ class _TaskDetailState extends State<TaskDetail> {
                                     scrollDirection: Axis.horizontal,
                                     itemCount: data.userTask!.length,
                                     itemBuilder: (context, index) {
-                                      return Align(
-                                        widthFactor: 0.75,
-                                        child: CircleAvatar(
-                                          backgroundColor: index.isOdd
-                                              ? Colors.blue
-                                              : Colors.amber,
-                                          child: Text(
-                                            data.userTask![index].userId
-                                                .toString(),
-                                            style: const TextStyle(
-                                                color: Colors.white),
+                                      if (index < 5) {
+                                        return Align(
+                                          widthFactor: 0.75,
+                                          child: CircleAvatar(
+                                            backgroundColor: index.isOdd
+                                                ? Colors.blue
+                                                : Colors.amber,
+                                            child: Text(
+                                              data.userTask![index].userId
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      } else if (index == 5) {
+                                        return Align(
+                                          widthFactor: 0.75,
+                                          child: CircleAvatar(
+                                            child: Text(
+                                                "+${data.userTask!.length - 5}"),
+                                          ),
+                                        );
+                                      } else {
+                                        return const SizedBox();
+                                      }
                                     },
                                   ),
                                 ),
