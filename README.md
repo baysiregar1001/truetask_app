@@ -1,6 +1,6 @@
 # truetask_app
 
-Aplication for time managament
+Application for time managament
 
 ## Getting Started
 
