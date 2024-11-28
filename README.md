@@ -1,6 +1,6 @@
 # truetask_app
 
-A new Flutter project.
+Aplication for time managament
 
 ## Getting Started
 
